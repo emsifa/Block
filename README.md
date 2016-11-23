@@ -4,7 +4,7 @@ Block - PHP Native Template System
 [![Build Status](https://img.shields.io/travis/emsifa/Block.svg?style=flat-square)](https://travis-ci.org/emsifa/Block)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://doge.mit-license.org)
 
-Block is PHP native template system inspiring by Laravel Blade.
+Block is PHP native template system inspired by Laravel Blade.
 Block is not template language, block doesn't need to be compiled and cached like blade, twig, smarty, etc.
 
 ## Getting Started
@@ -44,17 +44,17 @@ echo Block::render('hello', [
 ]);
 ```
 
-> Note: you must ignore extension `.php` in `render`, `insert` and `extend` method.
+> Note: you must ignore extension `.php` in `render`, `insert` and `extend` methods.
 
 ## Extending and Blocking
 
-There is two main view type in most template engines or template systems. 
+There is two main view types in most template engines or template systems. 
 Master view, and Page view.
 
 Master view is a view that contain base and required html tags like `<doctype>`, `<html>`, `<head>`, `<body>`, etc.
 Page view is a view that `extend` master view and contain some blocks that defined in master view.
 
-> Note: Master view **is not** for rendered by `render` method. Master view is just for extended by some view pages.
+> Note: Master view **is not** for rendered by `render` method. Master view is just for extended by some page views.
 
 If you familiar with laravel blade syntax, here is the differences.
 
@@ -64,7 +64,8 @@ If you familiar with laravel blade syntax, here is the differences.
 | @section('content')   | <?php Block::start('content') ?>    |
 | @stop                 | <?php Block::stop() ?>              |
 | @show                 | <?php Block::show() ?>              |
-| @yield('content')     | <?php echo Block::get('content') ?>      |
+| @parent               | <?php Block::parent() ?>            |
+| @yield('content')     | <?php echo Block::get('content') ?> |
 
 Here is a simple real world case about extending and blocking
 
@@ -101,12 +102,11 @@ Here is a simple real world case about extending and blocking
 
 > In example above we use `<?=` for `Block::start`, `Block::show` methods. 
   It is ok because those methods doesn't return a value.
-  But for `Block::get` you need to `echo` them, so you must use `<?=` instead just `<?php`. 
 
 #### Create Page View
 
-In master view above, there are blocks `stylesheets`, `content`, and `scripts`.
-So we need to define them in our page view. 
+In master view above, there are block `stylesheets`, `content`, and `scripts`.
+So you need to define them in your page view. 
 
 ```php
 <!-- Stored in path/to/views/pages/lorem-ipsum.php -->
@@ -135,11 +135,11 @@ So we need to define them in our page view.
 <?= Block::stop() ?>
 ```
 
-> All blocks above actually is optional. But we need to show you how real world like.
+> All blocks above actually is optional.
 
 #### Render It!
 
-Now you can render a page view with render method.
+Then you can render a page view with render method.
 
 ```php
 echo Block::render('pages/lorem-ipsum', [
@@ -215,7 +215,7 @@ But you can render it by put it in master or page view via `insert` method.
 
 For example, let's create a new page view that contain a widget slider 
 
-First we need to create partial view for slider widget:
+First you need to create partial view for slider widget:
 
 ```php
 <!-- Stored in path/to/views/partials/slider.php -->
@@ -239,7 +239,7 @@ First we need to create partial view for slider widget:
 
 ```
 
-Then we put it in home page view.
+Then put it in home page view.
 
 ```php
 <!-- Stored in path/to/views/pages/home.php -->
