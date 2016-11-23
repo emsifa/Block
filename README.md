@@ -90,7 +90,7 @@ Here is a simple real world case about extending and blocking
     <?= Block::get('content') ?>
   </div>
   <footer>
-    @copy; 2016 - my app
+    &copy; 2016 - my app
   </footer>
   <?= Block::start('scripts') ?>
   <script src="jquery.js"></script>
@@ -171,7 +171,7 @@ And the result should look like this
     </p>
   </div>
   <footer>
-    @copy; 2016 - my app
+    &copy; 2016 - my app
   </footer>
   <script src="jquery.js"></script>
   <script src="bootstrap.js"></script>
@@ -304,7 +304,7 @@ Now if you `echo Block::render('pages/home')`, the output should like this:
     </div>
   </div>
   <footer>
-    @copy; 2016 - my app
+    &copy; 2016 - my app
   </footer>
   <script src="jquery.js"></script>
   <script src="bootstrap.js"></script>
