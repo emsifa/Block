@@ -100,7 +100,7 @@ Here is a simple real world case about extending and blocking
 </html>
 ```
 
-> In example above we use `<?=` for `Block::start`, `Block::show` methods. 
+> In example above we use `<?=` instead `<?php` for `Block::start` and `Block::show`. 
   It is ok because those methods doesn't return a value.
 
 #### Create Page View
