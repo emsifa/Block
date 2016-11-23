@@ -7,12 +7,16 @@ class Block
     
     const PARENT_REPLACER = '<!--block::parent-->';
     const NAMESPACE_SEPARATOR = '::';
-    const VIEW_EXTENSION = 'php';
 
     /**
      * @var string $extend
      */
     public static $extend;
+
+    /**
+     * @var string $extension
+     */
+    public static $extension = 'php';
 
     /**
      * @var array $blocks
@@ -51,6 +55,26 @@ class Block
     {
         $namespace = trim($namespace);
         return array_key_exists($namespace, static::$directory_namespaces) ? static::$directory_namespaces[$namespace] : __DIR__;
+    }
+
+    /**
+     * Set view extension
+     *
+     * @param string $extension
+     */
+    public static function setViewExtension($extension)
+    {
+        static::$extension = $extension;
+    }
+
+    /**
+     * Get view extension
+     *
+     * @return string $extension
+     */
+    public static function getViewExtension()
+    {
+        return static::$extension;
     }
 
     /**
@@ -201,10 +225,11 @@ class Block
      */
     protected static function resolvePath($view)
     {
+        $view = str_replace('.', '/', $view);
         $expl = explode(static::NAMESPACE_SEPARATOR, $view);
         list($namespace, $view_path) = (count($expl) > 1) ? $expl : ['', $expl[0]];
 
-        $path = static::getDirectory($namespace) . '/' . $view_path . '.' . static::VIEW_EXTENSION;
+        $path = static::getDirectory($namespace) . '/' . $view_path . '.' . static::getViewExtension();
         return $path;
     }
 

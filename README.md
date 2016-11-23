@@ -7,6 +7,29 @@ Block - PHP Native Template System
 Block is PHP native template system inspired by Laravel Blade.
 Block is not template language, block doesn't need to be compiled and cached like blade, twig, smarty, etc.
 
+## Requirements
+
+Block need PHP >= 5.5 to works.
+
+## Installation
+
+#### With Composer
+
+If your project using composer, you may want install Block via composer by typing this command:
+
+```
+composer require "emsifa/block"
+```
+
+#### Without Composer
+
+Block is single file library, 
+so you can easily install it without autoloader by following steps below:
+
+* Download this repo or just copy-paste `src/Block.php`
+* Place it somewhere in your project. For example in `yourproject/lib/Block.php`.
+* Then include/require it to your code
+
 ## Getting Started
 
 #### Preparation
@@ -71,7 +94,7 @@ Here is a simple real world case about extending and blocking
 
 #### Create Master View
 
-```php
+```html
 <!-- Stored in path/to/views/master.php -->
 <!DOCTYPE html>
 <html lang="en">
@@ -108,7 +131,7 @@ Here is a simple real world case about extending and blocking
 In master view above, there are block `stylesheets`, `content`, and `scripts`.
 So you need to define them in your page view. 
 
-```php
+```html
 <!-- Stored in path/to/views/pages/lorem-ipsum.php -->
 <?= Block::extend('master') ?>
 
@@ -139,10 +162,10 @@ So you need to define them in your page view.
 
 #### Render It!
 
-Then you can render a page view with render method.
+Then you can render that _page view_ via render method.
 
 ```php
-echo Block::render('pages/lorem-ipsum', [
+echo Block::render('pages.lorem-ipsum', [
 	'Lorem Ipsum'
 ]); 
 ```
@@ -183,7 +206,7 @@ And the result should look like this
 </html>
 ```
 
-## Another Useful Stuff
+## Another Useful Stuffs
 
 #### `$get($key, $default = NULL)`
 
@@ -217,7 +240,7 @@ For example, let's create a new _page view_ that contain a widget slider
 
 First you need to create _partial view_ for widget slider:
 
-```php
+```html
 <!-- Stored in path/to/views/partials/slider.php -->
 <div class="widget widget-slider">
   <div class="slider-wrapper">
@@ -241,13 +264,13 @@ First you need to create _partial view_ for widget slider:
 
 Then put it in `home` _page view_.
 
-```php
+```html
 <!-- Stored in path/to/views/pages/home.php -->
 <?= Block::extend('master') ?>
 
 <?= Block::start('content') ?>
 <div class="container">
-  <?= Block::insert('partials/slider') ?>
+  <?= Block::insert('partials.slider') ?>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
     Officiis, mollitia ad commodi. 
@@ -270,7 +293,7 @@ Then put it in `home` _page view_.
   </script>
 <?= Block::stop() ?>
 ```
-Now if you `echo Block::render('pages/home')`, the output should like this:
+Now if you `echo Block::render('pages.home')`, the output should like this:
 
 ```html
 <!DOCTYPE html>
@@ -332,7 +355,28 @@ For example, you have module admin that have it's own views directory.
 Block::addDirectory('path/to/admin/views', 'admin');
 
 // then you can load master/page/partial view in that directory like this
-Block::render('admin::pages/dashboard');
+Block::render('admin::pages.dashboard');
 Block::extend('admin::master');
-Block::insert('admin::partials/some-chart');
+Block::insert('admin::partials.some-chart');
 ```
+
+#### Set Custom View Extension
+
+Custom extension makes you easier to identify view files in your editor without open that file.
+In Block, you can change view extension by `setViewExtension` like example below:
+
+```php
+Block::setViewExtension('block.php');
+```
+
+Then your view filenames must be suffixed by `.block.php` instead just `.php`
+
+
+## Dot or Slash?
+
+I love blade for template engine, but I can't always use blade in my project, especially in small projects. 
+So I create this library to make it as similar as blade.
+
+In blade you can use `/` or `.` to load view files. So block too. 
+But we prefer you to use `.` instead `/` to make you easier remembering 
+that you don't need to put view extension in block.

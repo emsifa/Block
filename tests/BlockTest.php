@@ -10,6 +10,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         }
         Block::setDirectory(__DIR__.'/views');
         Block::setDirectory(__DIR__.'/another_views', 'another');
+        Block::setViewExtension('php'); // set it to default view extension for every tests
     }
     
     public function testSetAndGetDirectory()
@@ -66,6 +67,25 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testSimpleRender()
     {
+        $output = Block::render('simple-page', [
+            'message' => 'Simple Page'
+        ]);
+
+        $this->assertEquals($output, '<h1>Simple Page</h1>');
+    }
+
+    public function testDotPathSeparator()
+    {
+        $output = Block::render('foo.bar.baz', [
+            'message' => 'Simple Page'
+        ]);
+
+        $this->assertEquals($output, '<h1>Simple Page</h1>');
+    }
+
+    public function testCustomExtension()
+    {
+        Block::setViewExtension('block');
         $output = Block::render('simple-page', [
             'message' => 'Simple Page'
         ]);
