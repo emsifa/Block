@@ -317,7 +317,7 @@ Now if you `echo Block::render('pages/home')`, the output should like this:
 </html>
 ```
 
-Yup! `slider.css` and `slider.js` is placed in that order!
+Yup! `slider.css` and `slider.js` are placed in that order!
 
 > Note: If you want to use page view data in partial view, you can pass `$__data` in `Block::insert`. 
   For example, in slider above will be `Block::insert('slider', $__data)`
