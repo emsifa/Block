@@ -11,12 +11,12 @@ class Block
     /**
      * @var string $extend
      */
-    public static $extend;
+    protected static $extend;
 
     /**
      * @var string $extension
      */
-    public static $extension = 'php';
+    protected static $extension = 'php';
 
     /**
      * @var array $blocks
