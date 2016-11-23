@@ -1,7 +1,7 @@
 Block - PHP Native Template System
 ===========================================
 
-[![Build Status](https://img.shields.io/travis/emsifa/block.svg?style=flat-square)](https://travis-ci.org/emsifa/block)
+[![Build Status](https://img.shields.io/travis/emsifa/Block.svg?style=flat-square)](https://travis-ci.org/emsifa/Block)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://doge.mit-license.org)
 
 Block is PHP native template system inspiring by Laravel Blade.
