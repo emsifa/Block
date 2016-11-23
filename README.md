@@ -64,9 +64,9 @@ If you familiar with laravel blade syntax, here is the differences.
 | @section('content')   | <?php Block::start('content') ?>    |
 | @stop                 | <?php Block::stop() ?>              |
 | @show                 | <?php Block::show() ?>              |
-| @yield('content')     | <?php Block::get('content') ?>      |
+| @yield('content')     | <?php echo Block::get('content') ?>      |
 
-Here is a simple real world case using extending and blocking
+Here is a simple real world case about extending and blocking
 
 #### Create Master View
 
