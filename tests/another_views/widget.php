@@ -1,0 +1,1 @@
+<div>widget content</div>
