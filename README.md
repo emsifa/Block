@@ -352,7 +352,7 @@ You can put second argument in `setDirectory` method to set namespaced directory
 For example, you have module admin that have it's own views directory.
 
 ```php
-Block::addDirectory('path/to/admin/views', 'admin');
+Block::setDirectory('path/to/admin/views', 'admin');
 
 // then you can load master/page/partial view in that directory like this
 Block::render('admin::pages.dashboard');
