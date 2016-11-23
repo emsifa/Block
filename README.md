@@ -1,6 +1,9 @@
 Block - PHP Native Template System
 ===========================================
 
+[![Build Status](https://img.shields.io/travis/rakit/framework.svg?style=flat-square)](https://travis-ci.org/emsifa/block)
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://doge.mit-license.org)
+
 Block is PHP native template system inspiring by Laravel Blade.
 Block is not template language, block doesn't need to be compiled and cached like blade, twig, smarty, etc.
 
@@ -35,12 +38,10 @@ Create file `path/to/views/hello.php`.
 Then somewhere in your code, you can render it with `render` method like this:
 
 ```php
-
 echo Block::render('hello', [
 	'title' => 'Hello World'
 	'message' => 'Lorem ipsum dolor sit amet'
 ]);
-
 ```
 
 > Note: you must ignore extension `.php` in `render`, `insert` and `extend` method.
@@ -182,7 +183,7 @@ And the result should look like this
 </html>
 ```
 
-## Just it? No!
+## Another Useful Stuff
 
 Here is some useful things and case
 
@@ -331,12 +332,10 @@ You can put second argument in `setDirectory` method to set namespaced directory
 For example, you have module admin that have it's own views directory.
 
 ```php
-
 Block::addDirectory('path/to/admin/views', 'admin');
 
 // then you can load master/page/partial view in that directory like this
 Block::render('admin::pages/dashboard');
 Block::extend('admin::master');
 Block::insert('admin::partials/some-chart');
-
 ```
