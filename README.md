@@ -185,8 +185,6 @@ And the result should look like this
 
 ## Another Useful Stuff
 
-Here is some useful things and case
-
 #### `$get($key, $default = NULL)`
 
 There is `$get` variable that contain anonymous function in your view files.
