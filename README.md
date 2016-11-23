@@ -279,8 +279,8 @@ Now if you `echo Block::render('pages/home')`, the output should like this:
   <meta charset="UTF-8">
   <title>Default Title</title>
   <link rel="stylesheet" href="bootstrap.css">
-  <link rel="stylesheet" href="slider.css">
   <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="slider.css">
 </head>
 <body>
   <header>
@@ -308,16 +308,16 @@ Now if you `echo Block::render('pages/home')`, the output should like this:
   </footer>
   <script src="jquery.js"></script>
   <script src="bootstrap.js"></script>
-  <script src="slider.js"></script>
   <script src="home.js"></script>
   <script>
     initHomepage();
   </script>
+  <script src="slider.js"></script>
 </body>
 </html>
 ```
 
-Yup! `slider.css` and `slider.js` are placed in that order!
+Notice: `slider.css` and `slider.js` are placed in that order
 
 > Note: If you want to use page view data in partial view, you can pass `$__data` in `Block::insert`. 
   For example, in slider above will be `Block::insert('slider', $__data)`
