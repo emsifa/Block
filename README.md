@@ -192,7 +192,7 @@ This function allows you to get a value passed by `render` method.
 If the key exists, it will return that value, 
 and if not it will return default value (NULL).
 
-For example in master view above, if you not set `title` in array, it will show an error undefined variable title.
+For example in master view above, if you didn't set `title` in array, it will show an error undefined variable title.
 So instead using `isset` like this
 
 ```php
