@@ -194,7 +194,7 @@ This function allows you to get a value passed by `render` method.
 If the key exists, it will return that value, 
 and if not it will return default value (NULL).
 
-For example in master view above, if you don't pass `title` key in array, it will show an error undefined variable title.
+For example in master view above, if you not set `title` in array, it will show an error undefined variable title.
 So instead using `isset` like this
 
 ```php
@@ -207,7 +207,7 @@ You can use `$get` like this:
 <title><?= $get('title', 'Default Title') ?></title>
 ```
 
-#### `Block::insert($view, array $data = array())
+#### `Block::insert($view, array $data = array())`
 
 There is another view type called `partial view`. 
 Partial view is a view file that contain a partial layout 
