@@ -247,7 +247,7 @@ Then put it in `home` _page view_.
 
 <?= Block::start('content') ?>
 <div class="container">
-  <?= Block::insert('partial/slider') ?>
+  <?= Block::insert('partials/slider') ?>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
     Officiis, mollitia ad commodi. 
