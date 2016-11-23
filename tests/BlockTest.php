@@ -1,8 +1,6 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-
-class BlockTest extends TestCase
+class BlockTest extends PHPUnit_Framework_TestCase
 {
 
     protected function setUp()
