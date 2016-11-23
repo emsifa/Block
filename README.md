@@ -207,15 +207,15 @@ You can use `$get` like this:
 
 #### `Block::insert($view, array $data = array())`
 
-There is another view type called `partial view`. 
-Partial view is a view file that contain a partial layout 
-that you can use in some page or master view like widget, sidebar, navbar, main-menu, etc.
-Partial view is like master view, it is not for rendered by `render` method. 
-But you can render it by put it in master or page view via `insert` method.
+There is another view type called _partial view_. 
+_Partial view_ is a view file that contain a partial layout 
+that you can use in some _page or master view_ like widget, sidebar, navbar, main-menu, etc.
+_Partial view_ is like _master view_, it is not for rendered by `render` method. 
+But you can render it by put it in _master or page view_ via `insert` method.
 
-For example, let's create a new page view that contain a widget slider 
+For example, let's create a new _page view_ that contain a widget slider 
 
-First you need to create partial view for slider widget:
+First you need to create _partial view_ for widget slider:
 
 ```php
 <!-- Stored in path/to/views/partials/slider.php -->
@@ -239,7 +239,7 @@ First you need to create partial view for slider widget:
 
 ```
 
-Then put it in home page view.
+Then put it in `home` _page view_.
 
 ```php
 <!-- Stored in path/to/views/pages/home.php -->
@@ -270,8 +270,7 @@ Then put it in home page view.
   </script>
 <?= Block::stop() ?>
 ```
-
-Now if you `echo Block::render('pages/home')`, the output should like:
+Now if you `echo Block::render('pages/home')`, the output should like this:
 
 ```html
 <!DOCTYPE html>
