@@ -5,17 +5,17 @@ Block - PHP Native Template System
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://doge.mit-license.org)
 
 Block is PHP native template system inspired by Laravel Blade.
-Block is not template language, block doesn't need to be compiled and cached like blade, twig, smarty, etc.
+Block is not template language, so block doesn't need to be compiled and cached like blade, twig, smarty, etc.
 
 ## Requirements
 
-Block need PHP >= 5.5 to works.
+Block requires PHP 5.5 or greater
 
 ## Installation
 
 #### With Composer
 
-If your project using composer, you may want install Block via composer by typing this command:
+If your project using composer, you can install Block via composer by typing this command:
 
 ```
 composer require "emsifa/block"
@@ -26,7 +26,7 @@ composer require "emsifa/block"
 Block is single file library, 
 so you can easily install it without autoloader by following steps below:
 
-* Download this repo or just copy-paste `src/Block.php`
+* Download this repo or just download raw `src/Block.php`
 * Place it somewhere in your project. For example in `yourproject/lib/Block.php`.
 * Then include/require it to your code
 
@@ -67,19 +67,19 @@ echo Block::render('hello', [
 ]);
 ```
 
-> Note: you must ignore extension `.php` in `render`, `insert` and `extend` methods.
+> Note: you don't need to put file extension in Block
 
 ## Extending and Blocking
 
 There is two main view types in most template engines or template systems. 
-Master view, and Page view.
+Master view, and page view.
 
-Master view is a view that contain base and required html tags like `<doctype>`, `<html>`, `<head>`, `<body>`, etc.
+Master view is a view that contain base html tags like `<doctype>`, `<html>`, `<head>`, `<body>`, etc.
 Page view is a view that `extend` master view and contain some blocks that defined in master view.
 
 > Note: Master view **is not** for rendered by `render` method. Master view is just for extended by some page views.
 
-If you familiar with laravel blade syntax, here is the differences.
+If you familiar with laravel blade syntax, here are the differences.
 
 | Blade                 | Block                               |
 |-----------------------|-------------------------------------|
@@ -90,7 +90,7 @@ If you familiar with laravel blade syntax, here is the differences.
 | @parent               | <?php Block::parent() ?>            |
 | @yield('content')     | <?php echo Block::get('content') ?> |
 
-Here is a simple real world case about extending and blocking
+Here is simple real world case about extending and blocking
 
 #### Create Master View
 
@@ -135,16 +135,6 @@ So you need to define them in your page view.
 <!-- Stored in path/to/views/pages/lorem-ipsum.php -->
 <?= Block::extend('master') ?>
 
-<?= Block::start('content') ?>
-<!-- notice me senpai!! \(^o^) -->
-<p>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-  Officiis, mollitia ad commodi. 
-  Eligendi saepe unde iusto quis, praesentium deleniti eos incidunt quas vero, 
-  voluptatem, reiciendis inventore, aliquam expedita et rerum.
-</p>
-<?= Block::stop() ?>
-
 <?= Block::start('stylesheets') ?>
   <?= Block::parent() ?>
   <!-- senpai!! \(^o^) -->
@@ -159,13 +149,21 @@ So you need to define them in your page view.
     initPage();
   </script>
 <?= Block::stop() ?>
+
+<?= Block::start('content') ?>
+<!-- notice me senpai!! \(^o^)/ -->
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+  Officiis, mollitia ad commodi. 
+  Eligendi saepe unde iusto quis, praesentium deleniti eos incidunt quas vero, 
+  voluptatem, reiciendis inventore, aliquam expedita et rerum.
+</p>
+<?= Block::stop() ?>
 ```
 
-> All blocks above actually is optional.
+> All blocks above are actually optional
 
 #### Render It!
-
-Then you can render that _page view_ via render method.
 
 ```php
 echo Block::render('pages.lorem-ipsum', [
@@ -173,7 +171,7 @@ echo Block::render('pages.lorem-ipsum', [
 ]); 
 ```
 
-And the result should look like this
+And the result should looks like this
 
 ```html
 <!DOCTYPE html>
@@ -214,15 +212,15 @@ And the result should look like this
 
 ## Another Useful Stuffs
 
-#### `$get($key, $default = NULL)`
+#### $get($key, $default = NULL)
 
-There is `$get` variable that contain anonymous function in your view files.
+When rendering a view, we add variable `$get` that contain anonymous function.
 This function allows you to get a value passed by `render` method. 
 If the key exists, it will return that value, 
 and if not it will return default value (NULL).
 
 For example in master view above, if you didn't set `title` in array, it will show an error undefined variable title.
-So instead using `isset` like this
+So to fix that, instead using `isset` like this
 
 ```php
 <title><?= isset($title) ? $title : 'Default Title' ?></title>
@@ -234,15 +232,15 @@ You can use `$get` like this:
 <title><?= $get('title', 'Default Title') ?></title>
 ```
 
-#### `Block::insert($view, array $data = array())`
+#### Block::insert($view, array $data = array())
 
 There is another view type called _partial view_. 
-_Partial view_ is a view file that contain a partial layout 
-that you can use in some _page or master view_ like widget, sidebar, navbar, main-menu, etc.
+_Partial view_ is a view file containing partial layout 
+that you can use in some _page_ or _master view_ like widget, sidebar, navbar, main-menu, etc.
 _Partial view_ is like _master view_, it is not for rendered by `render` method. 
-But you can render it by put it in _master or page view_ via `insert` method.
+But you can render it by put it in _master_ or _page view_ via `insert` method.
 
-For example, let's create a new _page view_ that contain a widget slider 
+For example, let's create a new _page view_ that contain a widget slider.
 
 First you need to create _partial view_ for widget slider:
 
@@ -278,18 +276,6 @@ Then put it in `home` _page view_.
 <!-- Stored in path/to/views/pages/home.php -->
 <?= Block::extend('master') ?>
 
-<?= Block::start('content') ?>
-<div class="container">
-  <?= Block::insert('partials.slider') ?>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-    Officiis, mollitia ad commodi. 
-    Eligendi saepe unde iusto quis, praesentium deleniti eos incidunt quas vero, 
-    voluptatem, reiciendis inventore, aliquam expedita et rerum.
-  </p>
-</div>
-<?= Block::stop() ?>
-
 <?= Block::start('stylesheets') ?>
   <?= Block::parent() ?>
   <link rel="stylesheet" href="home.css">
@@ -302,8 +288,20 @@ Then put it in `home` _page view_.
     initHomepage()
   </script>
 <?= Block::stop() ?>
+
+<?= Block::start('content') ?>
+<div class="container">
+  <?= Block::insert('partials.slider') ?>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+    Officiis, mollitia ad commodi. 
+    Eligendi saepe unde iusto quis, praesentium deleniti eos incidunt quas vero, 
+    voluptatem, reiciendis inventore, aliquam expedita et rerum.
+  </p>
+</div>
+<?= Block::stop() ?>
 ```
-Now if you `echo Block::render('pages.home')`, the output should like this:
+Now if you `echo Block::render('pages.home')`, the output should looks like this:
 
 ```html
 <!DOCTYPE html>
@@ -312,9 +310,9 @@ Now if you `echo Block::render('pages.home')`, the output should like this:
   <meta charset="UTF-8">
   <title>Default Title</title>
   <link rel="stylesheet" href="bootstrap.css">
-  <link rel="stylesheet" href="home.css">
   <!-- senpai!! \(^o^) -->
   <link rel="stylesheet" href="slider.css">
+  <link rel="stylesheet" href="home.css">
 </head>
 <body>
   <header>
@@ -322,20 +320,20 @@ Now if you `echo Block::render('pages.home')`, the output should like this:
   </header>
   <div id="content">
     <div class="container">
-    <!-- notice me senpai!! \(^o^)/ -->
-    <div class="widget widget-slider">
-      <div class="slider-wrapper">
-        <div class="slide-1">Slide 1</div>
-        <div class="slide-2">Slide 2</div>
-        <div class="slide-3">Slide 3</div>
+      <!-- notice me senpai!! \(^o^)/ -->
+      <div class="widget widget-slider">
+        <div class="slider-wrapper">
+          <div class="slide-1">Slide 1</div>
+          <div class="slide-2">Slide 2</div>
+          <div class="slide-3">Slide 3</div>
+        </div>
       </div>
-    </div>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-      Officiis, mollitia ad commodi. 
-      Eligendi saepe unde iusto quis, praesentium deleniti eos incidunt quas vero, 
-      voluptatem, reiciendis inventore, aliquam expedita et rerum.
-    </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+        Officiis, mollitia ad commodi. 
+        Eligendi saepe unde iusto quis, praesentium deleniti eos incidunt quas vero, 
+        voluptatem, reiciendis inventore, aliquam expedita et rerum.
+      </p>
     </div>
   </div>
   <footer>
@@ -343,20 +341,20 @@ Now if you `echo Block::render('pages.home')`, the output should like this:
   </footer>
   <script src="jquery.js"></script>
   <script src="bootstrap.js"></script>
+  <!-- senpai!! (^o^)/ -->
+  <script src="slider.js"></script>
   <script src="home.js"></script>
   <script>
     initHomepage();
   </script>
-  <!-- senpai!! (^o^)/ -->
-  <script src="slider.js"></script>
 </body>
 </html>
 ```
 
-Notice: `slider.css` and `slider.js` are placed in that order
+Notice: `slider.css` and `slider.js` are placed in that order.
 
 > Note: If you want to use page view data in partial view, you can pass `$__data` in `Block::insert`. 
-  For example, in slider above will be `Block::insert('slider', $__data)`
+  For example, slider above would be `Block::insert('slider', $__data)`
 
 #### Add Directory Namespace
 
