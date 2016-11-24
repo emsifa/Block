@@ -136,25 +136,28 @@ So you need to define them in your page view.
 <?= Block::extend('master') ?>
 
 <?= Block::start('content') ?>
+<!-- notice me senpai!! \(^o^) -->
 <p>
-	Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-	Officiis, mollitia ad commodi. 
-	Eligendi saepe unde iusto quis, praesentium deleniti eos incidunt quas vero, 
-	voluptatem, reiciendis inventore, aliquam expedita et rerum.
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+  Officiis, mollitia ad commodi. 
+  Eligendi saepe unde iusto quis, praesentium deleniti eos incidunt quas vero, 
+  voluptatem, reiciendis inventore, aliquam expedita et rerum.
 </p>
 <?= Block::stop() ?>
 
 <?= Block::start('stylesheets') ?>
-	<?= Block::parent() ?>
-	<link rel="stylesheet" href="lorem.css">
+  <?= Block::parent() ?>
+  <!-- senpai!! \(^o^) -->
+  <link rel="stylesheet" href="lorem.css">
 <?= Block::stop() ?>
 
 <?= Block::start('scripts') ?>
-	<?= Block::parent() ?>
-	<script src="lorem.js"></script>
-	<script>
-		initPage();
-	</script>
+  <?= Block::parent() ?>
+  <!-- notice me too senpai!! (^o^)/ -->
+  <script src="lorem.js"></script>
+  <script>
+    initPage();
+  </script>
 <?= Block::stop() ?>
 ```
 
@@ -166,7 +169,7 @@ Then you can render that _page view_ via render method.
 
 ```php
 echo Block::render('pages.lorem-ipsum', [
-	'Lorem Ipsum'
+  'Lorem Ipsum'
 ]); 
 ```
 
@@ -179,6 +182,7 @@ And the result should look like this
   <meta charset="UTF-8">
   <title>Lorem Ipsum</title>
   <link rel="stylesheet" href="bootstrap.css">
+  <!-- senpai!! \(^o^) -->
   <link rel="stylesheet" href="lorem.css">
 </head>
 <body>
@@ -186,6 +190,7 @@ And the result should look like this
     <h1>App Name</h1>
   </header>
   <div id="content">
+    <!-- notice me senpai!! \(^o^) -->
     <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
       Officiis, mollitia ad commodi. 
@@ -198,6 +203,7 @@ And the result should look like this
   </footer>
   <script src="jquery.js"></script>
   <script src="bootstrap.js"></script>
+  <!-- notice me too senpai!! (^o^)/ -->
   <script src="lorem.js"></script>
   <script>
     initPage();
@@ -242,6 +248,8 @@ First you need to create _partial view_ for widget slider:
 
 ```html
 <!-- Stored in path/to/views/partials/slider.php -->
+
+<!-- notice me senpai!! \(^o^)/ -->
 <div class="widget widget-slider">
   <div class="slider-wrapper">
     <div class="slide-1">Slide 1</div>
@@ -251,13 +259,15 @@ First you need to create _partial view_ for widget slider:
 </div>
 
 <?= Block::start('stylesheets') ?>
-	<?= Block::parent() ?>
-	<link rel="stylesheet" href="slider.css">
+  <?= Block::parent() ?>
+  <!-- senpai!! \(^o^) -->
+  <link rel="stylesheet" href="slider.css">
 <?= Block::stop() ?>
 
 <?= Block::start('scripts') ?>
-	<?= Block::parent() ?>
-	<script src="slider.js"></script>
+  <?= Block::parent() ?>
+  <!-- senpai!! (^o^)/ -->
+  <script src="slider.js"></script>
 <?= Block::stop() ?>
 
 ```
@@ -303,6 +313,7 @@ Now if you `echo Block::render('pages.home')`, the output should like this:
   <title>Default Title</title>
   <link rel="stylesheet" href="bootstrap.css">
   <link rel="stylesheet" href="home.css">
+  <!-- senpai!! \(^o^) -->
   <link rel="stylesheet" href="slider.css">
 </head>
 <body>
@@ -311,6 +322,7 @@ Now if you `echo Block::render('pages.home')`, the output should like this:
   </header>
   <div id="content">
     <div class="container">
+    <!-- notice me senpai!! \(^o^)/ -->
     <div class="widget widget-slider">
       <div class="slider-wrapper">
         <div class="slide-1">Slide 1</div>
@@ -335,6 +347,7 @@ Now if you `echo Block::render('pages.home')`, the output should like this:
   <script>
     initHomepage();
   </script>
+  <!-- senpai!! (^o^)/ -->
   <script src="slider.js"></script>
 </body>
 </html>
