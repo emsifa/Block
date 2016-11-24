@@ -67,7 +67,7 @@ echo Block::render('hello', [
 ]);
 ```
 
-> Note: you don't need to put file extension in Block
+Yes. you don't need to put file extension in Block
 
 ## Extending and Blocking
 
@@ -354,7 +354,7 @@ Now if you `echo Block::render('pages.home')`, the output should looks like this
 Notice: `slider.css` and `slider.js` are placed in that order.
 
 > Note: If you want to use page view data in partial view, you can pass `$__data` in `Block::insert`. 
-  For example, slider above would be `Block::insert('slider', $__data)`
+  For example, slider above would be `Block::insert('partials.slider', $__data)`
 
 #### Add Directory Namespace
 
