@@ -167,8 +167,8 @@ So you need to define them in your page view.
 
 ```php
 echo Block::render('pages.lorem-ipsum', [
-  'Lorem Ipsum'
-]); 
+  'title' => 'Lorem Ipsum'
+]);
 ```
 
 And the result should looks like this
