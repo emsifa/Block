@@ -274,7 +274,7 @@ Block::render('pages/profile', [
 
 You can use `$get` like this:
 
-```php
+```html
 <div class='profile'>
   Name: <?= $get('user.name') ?>
   City: <?= $get('user.city', 'Unknown') ?> 
