@@ -234,7 +234,7 @@ View
 </div>
 ```
 
-Then, title would be escaped like this:
+Then, title will be escaped like this:
 ```php
 <div>
   <h4>Title &lt;script&gt;XSS.attack()&lt;/script&gt;</h4>
@@ -281,7 +281,7 @@ You can use `$get` like this:
 </div>
 ```
 
-In example above `user.city` would return 'Unknown' because you didn't set `city` in array `user`.
+In example above `user.city` will return 'Unknown' because you didn't set `city` in array `user`.
 
 #### Block::insert($view, array $data = array())
 
