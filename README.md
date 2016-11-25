@@ -446,7 +446,7 @@ But get and set data inside view file is a bad practice.
 So, the solution is using view composer. 
 With composer, you can add some data to view before rendering that view.
 
-Here is an example for case above:
+Here is an example for that case:
 
 First you need to register view composer for navbar
 
