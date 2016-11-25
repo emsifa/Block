@@ -277,11 +277,11 @@ You can use `$get` like this:
 ```html
 <div class='profile'>
   Name: <?= $get('user.name') ?>
-  City: <?= $get('user.city', 'Unknown') ?> 
+  City: <?= $get('user.city.name', 'Unknown') ?> 
 </div>
 ```
 
-In example above `user.city` will return 'Unknown' because you didn't set `city` in array `user`.
+In example above `user.city.name` will return 'Unknown' because you didn't set `city` in array `user`.
 
 #### Block::insert($view, array $data = array())
 
