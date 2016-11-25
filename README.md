@@ -440,8 +440,8 @@ We have told you that Block is inspired by Blade right. So Block also have view 
 Sometimes you may have a view partial that have it's own data. 
 For example, think about navbar. In navbar, you want to display logged user name.
 So basically you need to pass data user name in all views who rendering that navbar.
-Alternatively, you may get user data inside navbar view. 
-But getting data inside view file is a bad practice.
+Alternatively, you may get and set user data inside navbar view. 
+But get and set data inside view file is a bad practice.
 
 So, the solution is using view composer. 
 With composer, you can add some data to view before rendering that view.
