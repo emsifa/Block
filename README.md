@@ -461,7 +461,7 @@ Block::composer('partials.navbar', function($data) {
 
 Then in your navbar, you can do this
 
-```php
+```html
 <!-- Stored in path/to/views/partials/navbar.php -->
 <nav>
   <li>Some menu</li>
