@@ -433,7 +433,7 @@ Block::setViewExtension('block.php');
 
 Then your view filenames must be suffixed by `.block.php` instead just `.php`
 
-#### Block::compose($views, callable $composer)
+#### Block::composer($views, callable $composer)
 
 We have told you that Block is inspired by Blade right. So Block also have view composer like blade.
 
