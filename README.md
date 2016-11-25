@@ -71,7 +71,7 @@ Yes. you don't need to put file extension in Block
 
 ## Extending and Blocking
 
-There is two main view types in most template engines or template systems. 
+Practically, there is two main view types in most template engines or template systems. 
 Master view, and page view.
 
 Master view is a view that contain base html tags like `<doctype>`, `<html>`, `<head>`, `<body>`, etc.
