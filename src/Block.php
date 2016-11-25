@@ -30,6 +30,12 @@ class Block
     protected static $starteds = [];
     
     /**
+     * View composers
+     * @var array $compsoers
+     */
+    protected static $composers = [];
+    
+    /**
      * @var array $directory_namespaces
      */
     protected static $directory_namespaces = [];
@@ -89,6 +95,23 @@ class Block
     }
 
     /**
+     * Register view composer
+     *
+     * @param string|array $views
+     */
+    public static function composer($views, callable $composer)
+    {
+        $views = (array) $views;
+        foreach($views as $view) {
+            if (!isset(static::$composers[$view])) {
+                static::$composers[$view] = [];
+            }
+
+            static::$composers[$view][] = $composer;
+        }
+    }
+
+    /**
      * Render a view
      *
      * @param string $view
@@ -98,11 +121,15 @@ class Block
      */
     public static function render($view, array $__data = array())
     {
+        $__data = static::composeData($view, $__data);
         static::makeSureViewExists($view);
         $view_path = static::resolvePath($view);
 
         extract($__data);
         $get = static::makeGetter($__data);
+        $e = function($value) {
+            return Block::escape($value);
+        };
 
         ob_start();
         include($view_path);
@@ -125,11 +152,16 @@ class Block
      */
     public static function insert($view, array $__data = array())
     {
+        $__data = static::composeData($view, $__data);
         static::makeSureViewExists($view);
         $path = static::resolvePath($view);
 
         extract($__data);
         $get = static::makeGetter($__data);
+        $e = function($value) {
+            return Block::escape($value);
+        };
+
         include($path);
     }
 
@@ -200,6 +232,18 @@ class Block
     }
 
     /**
+     * Escaping html
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public static function escape($value)
+    {
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
+    }
+
+    /**
      * Render block stacks
      *
      * @param array $stacks
@@ -243,8 +287,28 @@ class Block
     protected static function makeGetter(array $data)
     {
         return function($key, $default = null) use ($data) {
-            return isset($data[$key])? $data[$key] : $default;
+            if (array_key_exists($key, $data)) {
+                return $data[$key];
+            }
+            foreach (explode('.', $key) as $segment) {
+                if (is_array($data) && array_key_exists($segment, $data)) {
+                    $data = $data[$segment];
+                } else {
+                    return $default;
+                }
+            }
+            return $data;
         };
+    }
+
+    protected static function composeData($view, array $data)
+    {
+        $composers = isset(static::$composers[$view]) ? static::$composers[$view] : [];
+        foreach($composers as $composer) {
+            $data = array_merge($data, (array) call_user_func_array($composer, [$data, $view]));
+        }   
+
+        return $data;
     }
 
 }

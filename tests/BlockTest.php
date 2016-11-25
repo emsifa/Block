@@ -74,6 +74,43 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($output, '<h1>Simple Page</h1>');
     }
 
+    public function testEscaping()
+    {
+        $output = Block::render('escaping', [
+            'html' => '<h1>Foo</h1>',
+            'script' => '<script>Bar</script>'
+        ]);
+
+        $this->assertOutputSimilar($output, '
+            <div>
+                &lt;h1&gt;Foo&lt;/h1&gt;
+                &lt;script&gt;Bar&lt;/script&gt;
+            </div>
+        ');
+    }
+
+    public function testGetter()
+    {
+        $output = Block::render('getter', [
+            'user' => [
+                'name' => 'John Doe',
+                'city' => [
+                    'name' => 'Jakarta',
+                ]
+            ]
+        ]);
+
+        $this->assertOutputSimilar($output, '
+            <div>
+                Name: John Doe
+                <br/>
+                City: Jakarta
+                <br/>
+                Province: Unknown
+            </div>
+        ');
+    }
+
     public function testDotPathSeparator()
     {
         $output = Block::render('foo.bar.baz', [
@@ -102,6 +139,23 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $this->assertOutputSimilar($output, '
             <h1>Page Title</h1> 
             <div>widget content</div>
+        ');
+    }
+
+    public function testViewComposer()
+    {
+        Block::composer('composer', function($data) {
+            return [
+                'data_from_composer' => 'bar'
+            ];
+        });
+
+        $output = Block::render('composer', [
+            'data_from_render' => 'foo'
+        ]);
+
+        $this->assertOutputSimilar($output, '
+            <h1>foo bar</h1> 
         ');
     }
 

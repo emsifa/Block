@@ -212,6 +212,35 @@ And the result should looks like this
 
 ## Another Useful Stuffs
 
+#### HTML Escaping
+
+Like another template engine, Block also have shortcuts for escaping HTML. 
+In Block you can escaping HTML using `Block::escape($html)` or `$e($html)`.
+
+Example:
+
+Render
+```php
+Block::render('pages/sample-escaping', [
+  'title' => 'Title <script>XSS.attack()</script>'
+]);
+```
+
+View
+```html
+<!-- Stored in path/to/views/pages/sample-escaping.php -->
+<div>
+  <h4><?= $e($title) ?></h4>
+</div>
+```
+
+Then, title would be escaped like this:
+```php
+<div>
+  <h4>Title &lt;script&gt;XSS.attack()&lt;/script&gt;</h4>
+</div>
+```
+
 #### $get($key, $default = NULL)
 
 When rendering a view, we add variable `$get` that contain anonymous function.
@@ -231,6 +260,28 @@ You can use `$get` like this:
 ```php
 <title><?= $get('title', 'Default Title') ?></title>
 ```
+
+Note: `$get` also support dot notation. It mean, you can access array using dot as separator in `$key`. 
+
+For example you render it with array data like below:
+```php
+Block::render('pages/profile', [
+  'user' => [
+    'name' => 'John Doe'
+  ]
+])
+```
+
+You can use `$get` like this:
+
+```php
+<div class='profile'>
+  Name: <?= $get('user.name') ?>
+  Office: <?= $get('user.city', 'Unknown') ?> 
+</div>
+```
+
+In example above `user.city` would return 'Unknown' because you didn't set `city` in array `user`.
 
 #### Block::insert($view, array $data = array())
 
@@ -382,6 +433,48 @@ Block::setViewExtension('block.php');
 
 Then your view filenames must be suffixed by `.block.php` instead just `.php`
 
+#### Block::compose($views, callable $composer)
+
+We have told you that Block is inspired by Blade right. So Block also have view composer like blade.
+
+Sometimes you may have a view partial that have it's own data. 
+For example, think about navbar. In navbar, you want to display logged user name.
+So basically you need to pass data user name in all views who rendering that navbar.
+Alternatively, you may get user data inside navbar view. 
+But getting data inside view file is a bad practice.
+
+So, the solution is using view composer. 
+With composer, you can add some data to view before rendering that view.
+
+Here is an example for case above:
+
+First you need to register view composer for navbar
+
+```php
+Block::composer('partials.navbar', function($data) {
+    // $data is data you passed into `render` or `insert` method
+    return [
+        'username' => Auth::user()->username
+    ];
+});
+```
+
+Then in your navbar, you can do this
+
+```php
+<!-- Stored in path/to/views/partials/navbar.php -->
+<nav>
+  <li>Some menu</li>
+  ...
+  <li>
+    <?= $username ?>
+  </li>
+</nav>
+```
+
+So now, whenever navbar is rendered, composer will set variable `username` to it.
+
+> You can set first argument as array if you wanna set a composer to multiple views.
 
 ## Dot or Slash?
 
