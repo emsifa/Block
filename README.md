@@ -289,7 +289,7 @@ There is another view type called _partial view_.
 _Partial view_ is a view file containing partial layout 
 that you can use in some _page_ or _master view_ like widget, sidebar, navbar, main-menu, etc.
 _Partial view_ is like _master view_, it is not for rendered by `render` method. 
-But you can render it by put it in _master_ or _page view_ via `insert` method.
+But you can render it by put it inside _master_ or _page view_ via `insert` method.
 
 For example, let's create a new _page view_ that contain a widget slider.
 
