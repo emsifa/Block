@@ -263,7 +263,7 @@ You can use `$get` like this:
 
 Note: `$get` also support dot notation. It mean, you can access array using dot as separator in `$key`. 
 
-For example you render it with array data like below:
+For example you render a view with array data like this:
 ```php
 Block::render('pages/profile', [
   'user' => [
