@@ -72,10 +72,10 @@ Yes. you don't need to put file extension in Block
 ## Extending and Blocking
 
 Practically, there is two main view types in most template engines or template systems. 
-_Master view_, and _page view_.
+_Master view_ and _page view_.
 
 _Master view_ is a view that contain base html tags like `<doctype>`, `<html>`, `<head>`, `<body>`, etc.
-_Page view_ is a view that `extend` master view and contain some blocks that defined in _master view_.
+_Page view_ is a view that `extend` _master view_ and contain some blocks that defined in _master view_.
 
 > Note: _Master view_ **is not** for rendered by `render` method. _Master view_ is just for extended by any _page views_.
 
