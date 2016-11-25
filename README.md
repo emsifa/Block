@@ -411,7 +411,7 @@ Notice: `slider.css` and `slider.js` are placed in that order.
 
 You can put second argument in `setDirectory` method to set namespaced directory.
 
-For example, you have module admin that have it's own views directory.
+For example, you have module admin that have its own views directory.
 
 ```php
 Block::setDirectory('path/to/admin/views', 'admin');
@@ -437,7 +437,7 @@ Then your view filenames must be suffixed by `.block.php` instead just `.php`
 
 We have told you that Block is inspired by Blade right. So Block also have view composer like blade.
 
-Sometimes you may have a view partial that have it's own data. 
+Sometimes you may have a view partial that have its own data. 
 For example, think about navbar. In navbar, you want to display logged user name.
 So basically you need to pass data user name in all views who rendering that navbar.
 Alternatively, you may get and set user data inside navbar view. 
