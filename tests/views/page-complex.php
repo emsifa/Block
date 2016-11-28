@@ -1,6 +1,6 @@
 <?= Block::extend('base') ?>
 
-<?= Block::start('content') ?>
+<?= Block::section('content') ?>
     <h1><?= $title ?></h1>
     <div id="container">
         <div id="sidebar">
@@ -12,12 +12,12 @@
     </div>
 <?= Block::stop() ?>
 
-<?= Block::start('scripts') ?>
+<?= Block::section('scripts') ?>
     <?= Block::parent() ?>
     <script src="b.js"></script>
 <?= Block::stop() ?>
 
-<?= Block::start('css') ?>
+<?= Block::section('css') ?>
     <?= Block::parent() ?>
     <link href="b.css"/>
 <?= Block::stop() ?>

@@ -39,11 +39,11 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testSimpleBlocking()
     {
-        Block::start('a block');
+        Block::section('a block');
         echo "i am block";
         Block::stop();
 
-        Block::start('another block');
+        Block::section('another block');
         echo "i am another block";
         Block::stop();
 
@@ -53,12 +53,12 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testParentBlocking()
     {
-        Block::start('js');
+        Block::section('js');
             echo Block::parent();
             echo "<script src='b.js'></script>";
         Block::stop();
 
-        Block::start('js');
+        Block::section('js');
         echo "<script src='a.js'></script>";
         Block::stop();
 
@@ -173,6 +173,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
                     <link href="b.css"/>
                 </head>
                 <body>
+                    <h1>Component</h1>
                     <h1>Page Complex</h1>
                     <div id="container">
                         <div id="sidebar">
@@ -183,6 +184,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
                         </div>
                     </div>
                     <script src="a.js"></script>
+                    <script>component.init()</script>
                     <script src="b.js"></script>
                     <script>js.here()</script>
                 </body>

@@ -84,7 +84,7 @@ If you familiar with laravel blade syntax, here are the differences.
 | Blade                 | Block                               |
 |-----------------------|-------------------------------------|
 | @extends('view-name') | <?php Block::extend('view-name') ?> |
-| @section('content')   | <?php Block::start('content') ?>    |
+| @section('content')   | <?php Block::section('content') ?>  |
 | @stop                 | <?php Block::stop() ?>              |
 | @show                 | <?php Block::show() ?>              |
 | @parent               | <?php Block::parent() ?>            |
@@ -101,7 +101,7 @@ Here is simple real world case about extending and blocking
 <head>
   <meta charset="UTF-8">
   <title><?= $title ?></title>
-  <?= Block::start('stylesheets') ?>
+  <?= Block::section('stylesheets') ?>
   <link rel="stylesheet" href="bootstrap.css">
   <?= Block::show() ?>
 </head>
@@ -115,7 +115,7 @@ Here is simple real world case about extending and blocking
   <footer>
     &copy; 2016 - my app
   </footer>
-  <?= Block::start('scripts') ?>
+  <?= Block::section('scripts') ?>
   <script src="jquery.js"></script>
   <script src="bootstrap.js"></script>
   <?= Block::show() ?>
@@ -123,7 +123,7 @@ Here is simple real world case about extending and blocking
 </html>
 ```
 
-> In example above we use `<?=` instead `<?php` for `Block::start` and `Block::show`. 
+> In example above we use `<?=` instead `<?php` for `Block::section` and `Block::show`. 
   It is ok because those methods doesn't return a value.
 
 #### Create Page View
@@ -135,13 +135,13 @@ So you need to define them in your page view.
 <!-- Stored in path/to/views/pages/lorem-ipsum.php -->
 <?= Block::extend('master') ?>
 
-<?= Block::start('stylesheets') ?>
+<?= Block::section('stylesheets') ?>
   <?= Block::parent() ?>
   <!-- senpai!! \(^o^) -->
   <link rel="stylesheet" href="lorem.css">
 <?= Block::stop() ?>
 
-<?= Block::start('scripts') ?>
+<?= Block::section('scripts') ?>
   <?= Block::parent() ?>
   <!-- notice me too senpai!! (^o^)/ -->
   <script src="lorem.js"></script>
@@ -150,7 +150,7 @@ So you need to define them in your page view.
   </script>
 <?= Block::stop() ?>
 
-<?= Block::start('content') ?>
+<?= Block::section('content') ?>
 <!-- notice me senpai!! \(^o^)/ -->
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
@@ -307,13 +307,13 @@ First you need to create _partial view_ for widget slider:
   </div>
 </div>
 
-<?= Block::start('stylesheets') ?>
+<?= Block::section('stylesheets') ?>
   <?= Block::parent() ?>
   <!-- senpai!! \(^o^) -->
   <link rel="stylesheet" href="slider.css">
 <?= Block::stop() ?>
 
-<?= Block::start('scripts') ?>
+<?= Block::section('scripts') ?>
   <?= Block::parent() ?>
   <!-- senpai!! (^o^)/ -->
   <script src="slider.js"></script>
@@ -327,12 +327,12 @@ Then put it in `home` _page view_.
 <!-- Stored in path/to/views/pages/home.php -->
 <?= Block::extend('master') ?>
 
-<?= Block::start('stylesheets') ?>
+<?= Block::section('stylesheets') ?>
   <?= Block::parent() ?>
   <link rel="stylesheet" href="home.css">
 <?= Block::stop() ?>
 
-<?= Block::start('scripts') ?>
+<?= Block::section('scripts') ?>
   <?= Block::parent() ?>
   <script src="home.js"></script>
   <script>
@@ -340,7 +340,7 @@ Then put it in `home` _page view_.
   </script>
 <?= Block::stop() ?>
 
-<?= Block::start('content') ?>
+<?= Block::section('content') ?>
 <div class="container">
   <?= Block::insert('partials.slider') ?>
   <p>

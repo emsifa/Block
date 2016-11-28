@@ -1,6 +1,6 @@
-<h1>Widget with js</h1>
+<h1>Component</h1>
 
 <?= Block::section('scripts') ?>
     <?= Block::parent() ?>
-    <script>js.here()</script>
+    <script>component.init()</script>
 <?= Block::stop() ?>

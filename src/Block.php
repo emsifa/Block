@@ -25,9 +25,9 @@ class Block
     
     /**
      * Started blocks
-     * @var array $starteds
+     * @var array $sections
      */
-    protected static $starteds = [];
+    protected static $sections = [];
     
     /**
      * View composers
@@ -180,9 +180,9 @@ class Block
      *
      * @param string $block_name
      */
-    public static function start($block_name)
+    public static function section($block_name)
     {
-        static::$starteds[] = $block_name;
+        static::$sections[] = $block_name;
         ob_start();
     }
 
@@ -201,7 +201,7 @@ class Block
      */
     public static function stop()
     {
-        $block_name = array_pop(static::$starteds);
+        $block_name = array_pop(static::$sections);
         if (!array_key_exists($block_name, static::$blocks)) {
             static::$blocks[$block_name] = [];
         }
@@ -213,7 +213,7 @@ class Block
      */
     public static function show()
     {
-        $block_name = static::$starteds[count(static::$starteds)-1];
+        $block_name = static::$sections[count(static::$sections)-1];
         static::stop();
         echo static::get($block_name);
     }

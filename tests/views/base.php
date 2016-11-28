@@ -1,14 +1,15 @@
 <html>
 <head>
     <title><?= $title ?></title>
-    <?= Block::start('css') ?>
+    <?= Block::section('css') ?>
     <link href="a.css"/>
     <?= Block::show() ?>
 </head>
 <body>
+    <?= Block::insert('another::component') ?>
     <?= Block::get('content') ?>
         
-    <?= Block::start('scripts') ?>
+    <?= Block::section('scripts') ?>
     <script src="a.js"></script>
     <?= Block::show() ?>
 </body>
