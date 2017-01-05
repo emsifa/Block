@@ -76,6 +76,16 @@ echo $block->render('hello', [
 
 Yes. you don't need to put file extension in Block.
 
+#### Result
+
+Now the result should looks like this:
+
+```php
+<h1>Hello World</h1>
+<p>
+  Lorem ipsum dolor sit amet
+</p>
+
 ## Extending and Blocking
 
 Practically, there is two main view types in most template engines or template systems. 
