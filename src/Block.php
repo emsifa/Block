@@ -31,9 +31,15 @@ class Block
     
     /**
      * View composers
-     * @var array $compsoers
+     * @var array $composers
      */
     protected $composers = [];
+
+    /**
+     * Shared variables
+     * @var array $shared_vars
+     */
+    protected $shared_vars = [];
     
     /**
      * @var array $directory_namespaces
@@ -100,6 +106,17 @@ class Block
     }
 
     /**
+     * Share variable to all views
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function share($key, $value)
+    {
+        $this->shared_vars[$key] = $value;
+    }
+
+    /**
      * Register view composer
      *
      * @param string|array $views
@@ -125,7 +142,7 @@ class Block
      */
     public function render($view, array $__data = array())
     {
-        $__data = $this->composeData($view, $__data);
+        $__data = $this->resolveData($view, $__data);
         $this->makeSureViewExists($view);
         $view_path = $this->resolvePath($view);
 
@@ -156,7 +173,7 @@ class Block
      */
     public function insert($view, array $__data = array())
     {
-        $__data = $this->composeData($view, $__data);
+        $__data = $this->resolveData($view, $__data);
         $this->makeSureViewExists($view);
         $path = $this->resolvePath($view);
 
@@ -301,8 +318,9 @@ class Block
         };
     }
 
-    protected function composeData($view, array $data)
+    protected function resolveData($view, array $data)
     {
+        $data = array_merge($this->shared_vars, $data);
         $composers = isset($this->composers[$view]) ? $this->composers[$view] : [];
         foreach($composers as $composer) {
             $data = array_merge($data, (array) call_user_func_array($composer, [$data, $view]));
