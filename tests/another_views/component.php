@@ -1,6 +1,6 @@
 <h1>Component</h1>
 
-<?= Block::section('scripts') ?>
-    <?= Block::parent() ?>
+<?= $this->section('scripts') ?>
+    <?= $this->parent() ?>
     <script>component.init()</script>
-<?= Block::stop() ?>
+<?= $this->stop() ?>

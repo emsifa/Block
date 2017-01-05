@@ -1,6 +1,6 @@
 <h1>Widget with js</h1>
 
-<?= Block::section('scripts') ?>
-    <?= Block::parent() ?>
+<?= $this->section('scripts') ?>
+    <?= $this->parent() ?>
     <script>js.here()</script>
-<?= Block::stop() ?>
+<?= $this->stop() ?>

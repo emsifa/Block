@@ -24,7 +24,7 @@ composer require "emsifa/block"
 #### Without Composer
 
 Block is single file library, 
-so you can easily install it without autoloader by following steps below:
+so you can easily install it without any autoloader by following steps below:
 
 * Download this repo or just download raw `src/Block.php`
 * Place it somewhere in your project. For example in `yourproject/lib/Block.php`.
@@ -32,22 +32,27 @@ so you can easily install it without autoloader by following steps below:
 
 ## Getting Started
 
-#### Preparation
-
-Block using static methods, so instead initialize an object, 
-you just need to set class alias and set views directory.
+#### Initialize Block
 
 ```php
 <?php
 
-class_alias('Emsifa\Block', 'Block'); // this is optional, you can aliasing as whatever you want
-Block::setDirectory('path/to/views');
+use Emsifa\Block;
 
+$view_dir = __DIR__.'/app/views';
+$view_extension = 'block.php';
+
+$block = new Block($view_dir, $view_extension);
 ```
+
+By default `$view_extension` is `php`. We prefer to use custom extension.
+Custom extension make you easier to identify view files in your editor without open that file.
+
+In this examples we use `block.php`, so our view filenames must be suffixed by `.block.php` instead just `.php`.
 
 #### Your first template
 
-Create file `path/to/views/hello.php`.
+Create file `path/to/views/hello.block.php`.
 
 ```php
 <h1><?= $title ?></h1>
@@ -61,13 +66,13 @@ Create file `path/to/views/hello.php`.
 Then somewhere in your code, you can render it with `render` method like this:
 
 ```php
-echo Block::render('hello', [
+echo $block->render('hello', [
 	'title' => 'Hello World'
 	'message' => 'Lorem ipsum dolor sit amet'
 ]);
 ```
 
-Yes. you don't need to put file extension in Block
+Yes. you don't need to put file extension in Block.
 
 ## Extending and Blocking
 
@@ -83,47 +88,47 @@ If you familiar with laravel blade syntax, here are the differences.
 
 | Blade                 | Block                               |
 |-----------------------|-------------------------------------|
-| @extends('view-name') | <?php Block::extend('view-name') ?> |
-| @section('content')   | <?php Block::section('content') ?>  |
-| @stop                 | <?php Block::stop() ?>              |
-| @show                 | <?php Block::show() ?>              |
-| @parent               | <?php Block::parent() ?>            |
-| @yield('content')     | <?php echo Block::get('content') ?> |
+| @extends('view-name') | <?php $this->extend('view-name') ?> |
+| @section('content')   | <?php $this->section('content') ?>  |
+| @stop                 | <?php $this->stop() ?>              |
+| @show                 | <?php $this->show() ?>              |
+| @parent               | <?php $this->parent() ?>            |
+| @yield('content')     | <?php echo $this->get('content') ?> |
 
 Here is simple real world case about extending and blocking
 
 #### Create Master View
 
 ```html
-<!-- Stored in path/to/views/master.php -->
+<!-- Stored in path/to/views/master.block.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title><?= $title ?></title>
-  <?= Block::section('stylesheets') ?>
+  <?= $this->section('stylesheets') ?>
   <link rel="stylesheet" href="bootstrap.css">
-  <?= Block::show() ?>
+  <?= $this->show() ?>
 </head>
 <body>
   <header>
     <h1>App Name</h1>
   </header>
   <div id="content">
-    <?= Block::get('content') ?>
+    <?= $this->get('content') ?>
   </div>
   <footer>
     &copy; 2016 - my app
   </footer>
-  <?= Block::section('scripts') ?>
+  <?= $this->section('scripts') ?>
   <script src="jquery.js"></script>
   <script src="bootstrap.js"></script>
-  <?= Block::show() ?>
+  <?= $this->show() ?>
 </body>
 </html>
 ```
 
-> In example above we use `<?=` instead `<?php` for `Block::section` and `Block::show`. 
+> In example above we use `<?=` instead `<?php` for `$this->section` and `$this->show`. 
   It is ok because those methods doesn't return a value.
 
 #### Create Page View
@@ -132,25 +137,25 @@ In master view above, there are block `stylesheets`, `content`, and `scripts`.
 So you need to define them in your page view. 
 
 ```html
-<!-- Stored in path/to/views/pages/lorem-ipsum.php -->
-<?= Block::extend('master') ?>
+<!-- Stored in path/to/views/pages/lorem-ipsum.block.php -->
+<?= $this->extend('master') ?>
 
-<?= Block::section('stylesheets') ?>
-  <?= Block::parent() ?>
+<?= $this->section('stylesheets') ?>
+  <?= $this->parent() ?>
   <!-- senpai!! \(^o^) -->
   <link rel="stylesheet" href="lorem.css">
-<?= Block::stop() ?>
+<?= $this->stop() ?>
 
-<?= Block::section('scripts') ?>
-  <?= Block::parent() ?>
+<?= $this->section('scripts') ?>
+  <?= $this->parent() ?>
   <!-- notice me too senpai!! (^o^)/ -->
   <script src="lorem.js"></script>
   <script>
     initPage();
   </script>
-<?= Block::stop() ?>
+<?= $this->stop() ?>
 
-<?= Block::section('content') ?>
+<?= $this->section('content') ?>
 <!-- notice me senpai!! \(^o^)/ -->
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
@@ -158,7 +163,7 @@ So you need to define them in your page view.
   Eligendi saepe unde iusto quis, praesentium deleniti eos incidunt quas vero, 
   voluptatem, reiciendis inventore, aliquam expedita et rerum.
 </p>
-<?= Block::stop() ?>
+<?= $this->stop() ?>
 ```
 
 > All blocks above are actually optional
@@ -166,7 +171,7 @@ So you need to define them in your page view.
 #### Render It!
 
 ```php
-echo Block::render('pages.lorem-ipsum', [
+echo $block->render('pages.lorem-ipsum', [
   'title' => 'Lorem Ipsum'
 ]);
 ```
@@ -215,20 +220,20 @@ And the result should looks like this
 #### HTML Escaping
 
 Like another template engine, Block also have shortcuts for escaping HTML. 
-In Block you can escaping HTML using `Block::escape($html)` or `$e($html)`.
+In Block you can escaping HTML using `$this->escape($html)` or `$e($html)`.
 
 Example:
 
 Render
 ```php
-Block::render('pages/sample-escaping', [
+$block->render('pages/sample-escaping', [
   'title' => 'Title <script>XSS.attack()</script>'
 ]);
 ```
 
 View
 ```html
-<!-- Stored in path/to/views/pages/sample-escaping.php -->
+<!-- Stored in path/to/views/pages/sample-escaping.block.php -->
 <div>
   <h4><?= $e($title) ?></h4>
 </div>
@@ -265,7 +270,7 @@ Note: `$get` also support dot notation. It mean, you can access array using dot 
 
 For example you render a view with array data like this:
 ```php
-Block::render('pages/profile', [
+$block->render('pages/profile', [
   'user' => [
     'name' => 'John Doe'
   ]
@@ -283,7 +288,7 @@ You can use `$get` like this:
 
 In example above `user.city.name` will return 'Unknown' because you didn't set `city` in array `user`.
 
-#### Block::insert($view, array $data = array())
+#### Include Partial View
 
 There is another view type called _partial view_. 
 _Partial view_ is a view file containing partial layout 
@@ -296,7 +301,7 @@ For example, let's create a new _page view_ that contain a widget slider.
 First you need to create _partial view_ for widget slider:
 
 ```html
-<!-- Stored in path/to/views/partials/slider.php -->
+<!-- Stored in path/to/views/partials/slider.block.php -->
 
 <!-- notice me senpai!! \(^o^)/ -->
 <div class="widget widget-slider">
@@ -307,42 +312,42 @@ First you need to create _partial view_ for widget slider:
   </div>
 </div>
 
-<?= Block::section('stylesheets') ?>
-  <?= Block::parent() ?>
+<?= $this->section('stylesheets') ?>
+  <?= $this->parent() ?>
   <!-- senpai!! \(^o^) -->
   <link rel="stylesheet" href="slider.css">
-<?= Block::stop() ?>
+<?= $this->stop() ?>
 
-<?= Block::section('scripts') ?>
-  <?= Block::parent() ?>
+<?= $this->section('scripts') ?>
+  <?= $this->parent() ?>
   <!-- senpai!! (^o^)/ -->
   <script src="slider.js"></script>
-<?= Block::stop() ?>
+<?= $this->stop() ?>
 
 ```
 
-Then put it in `home` _page view_.
+Then you can include it in `home` _page view_ using `insert` method.
 
 ```html
-<!-- Stored in path/to/views/pages/home.php -->
-<?= Block::extend('master') ?>
+<!-- Stored in path/to/views/pages/home.block.php -->
+<?= $this->extend('master') ?>
 
-<?= Block::section('stylesheets') ?>
-  <?= Block::parent() ?>
+<?= $this->section('stylesheets') ?>
+  <?= $this->parent() ?>
   <link rel="stylesheet" href="home.css">
-<?= Block::stop() ?>
+<?= $this->stop() ?>
 
-<?= Block::section('scripts') ?>
-  <?= Block::parent() ?>
+<?= $this->section('scripts') ?>
+  <?= $this->parent() ?>
   <script src="home.js"></script>
   <script>
     initHomepage()
   </script>
-<?= Block::stop() ?>
+<?= $this->stop() ?>
 
-<?= Block::section('content') ?>
+<?= $this->section('content') ?>
 <div class="container">
-  <?= Block::insert('partials.slider') ?>
+  <?= $this->insert('partials.slider') ?>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
     Officiis, mollitia ad commodi. 
@@ -350,9 +355,9 @@ Then put it in `home` _page view_.
     voluptatem, reiciendis inventore, aliquam expedita et rerum.
   </p>
 </div>
-<?= Block::stop() ?>
+<?= $this->stop() ?>
 ```
-Now if you `echo Block::render('pages.home')`, the output should looks like this:
+Now if you `echo $block->render('pages.home')`, the output should looks like this:
 
 ```html
 <!DOCTYPE html>
@@ -404,36 +409,27 @@ Now if you `echo Block::render('pages.home')`, the output should looks like this
 
 Notice: `slider.css` and `slider.js` are placed in that order.
 
-> Note: If you want to use page view data in partial view, you can pass `$__data` in `Block::insert`. 
-  For example, slider above would be `Block::insert('partials.slider', $__data)`
+> Note: If you want to use page view data in partial view, you can pass `$__data` in `$this->insert`. 
+  For example, slider above would be `$this->insert('partials.slider', $__data)`
 
-#### Add Directory Namespace
+## Add Directory Namespace
 
 You can put second argument in `setDirectory` method to set namespaced directory.
 
 For example, you have module admin that have its own views directory.
 
 ```php
-Block::setDirectory('path/to/admin/views', 'admin');
+$block->setDirectory('path/to/admin/views', 'admin');
 
-// then you can load master/page/partial view in that directory like this
-Block::render('admin::pages.dashboard');
-Block::extend('admin::master');
-Block::insert('admin::partials.some-chart');
+// then you can render it like this
+$block->render('admin::pages.dashboard');
+
+// and extend or insert something in your view files like this
+$this->extend('admin::master');
+$this->insert('admin::partials.some-chart');
 ```
 
-#### Set Custom View Extension
-
-Custom extension makes you easier to identify view files in your editor without open that file.
-In Block, you can change view extension by `setViewExtension` like example below:
-
-```php
-Block::setViewExtension('block.php');
-```
-
-Then your view filenames must be suffixed by `.block.php` instead just `.php`
-
-#### Block::composer($views, callable $composer)
+## View Composer
 
 We have told you that Block is inspired by Blade right. So Block also have view composer like blade.
 
@@ -448,10 +444,10 @@ With composer, you can add some data to view before rendering that view.
 
 Here is an example for that case:
 
-First you need to register view composer for navbar
+First you need to register view composer for navbar using `composer` method.
 
 ```php
-Block::composer('partials.navbar', function($data) {
+$block->composer('partials.navbar', function($data) {
     // $data is data you passed into `render` or `insert` method
     return [
         'username' => Auth::user()->username
@@ -462,7 +458,7 @@ Block::composer('partials.navbar', function($data) {
 Then in your navbar, you can do this
 
 ```html
-<!-- Stored in path/to/views/partials/navbar.php -->
+<!-- Stored in path/to/views/partials/navbar.block.php -->
 <nav>
   <li>Some menu</li>
   ...

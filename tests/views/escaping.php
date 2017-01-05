@@ -1,6 +1,6 @@
 <div>
     
     <?= $e($html) ?>
-    <?= static::escape($script) ?>
+    <?= $this->escape($script) ?>
 
 </div>
