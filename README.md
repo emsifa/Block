@@ -85,6 +85,7 @@ Now the result should looks like this:
 <p>
   Lorem ipsum dolor sit amet
 </p>
+```
 
 ## Extending and Blocking
 
