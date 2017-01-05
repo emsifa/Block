@@ -472,6 +472,64 @@ So now, whenever navbar is rendered, composer will set variable `username` to it
 
 > You can set first argument as array if you wanna set a composer to multiple views.
 
+## Component and Slot
+
+This is new feature in Laravel 5.4 which inspired by Vue.js. 
+Sometimes you may have partial view containing dynamic HTML.
+With `insert` method, you can add HTML string as data for second argument.
+But put HTML code in string is bad practice, most text editors cannot highlight it.
+
+So, this features allows you to write HTML that will be transformed to variable in partial view.
+
+Think about alert, you may have alert which contain dynamic HTML inside it like this:
+
+```php
+<!-- Stored in path/to/views/partials/alert.block.php -->
+<div class="alert">
+  <h4><?= $title ?></h4>
+  <?= $slot ?>
+</div>
+```
+
+With `insert` method, you need to pass `slot` and `title` variables like this:
+
+```php
+<?php 
+
+$this->insert('partials.alert', [
+    'title' => 'Validation Errors <strong class="close">&times;</strong>',
+    'slot' => '
+      <ul>
+        <li>Email is required</li>
+        <li>Password is required</li>
+      </ul>
+    '
+]);
+
+?>
+```
+
+It is ugly to put HTML inside string like that. 
+With component and slot, you can insert `alert` view like this:
+
+
+```php
+<?= $this->component('partials.alert') ?>
+  <?= $this->slot('title') ?>
+    Validation Errors <strong class="close">&times;</strong>
+  <?= $this->endslot() ?>
+  <ul>
+    <li>Email is required</li>
+    <li>Password is required</li>
+  </ul>
+<?= $this->endcomponent() ?>
+```
+
+Now code inside `component` will transformed into `slot` variable,
+and code inside `slot('title')` will transformed into `title` variable.
+
+> You can pass array view data as second argument in `component` method. 
+
 ## Dot or Slash?
 
 I love blade for template engine, but I can't always use blade in my project, especially in small projects. 
