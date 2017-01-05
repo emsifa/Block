@@ -205,6 +205,33 @@ class BlockTest extends PHPUnit_Framework_TestCase
         ');
     }
 
+
+    public function testComponent()
+    {
+        $output = $this->block->render('page-with-component');
+
+        $this->assertOutputSimilar($output, '
+            <div>
+                <div class="alert alert-info">
+                    <h4>
+                        <span>Alert Title</span>
+                    </h4>
+                    <p>Lorem ipsum dolor sit amet</p>
+                    <div class="whatever">
+                        <div class="var">
+                            <strong>Hola</strong>
+                        </div>
+                        <div class="slot">
+                            <div>
+                                Foobar
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        ');
+    }
+
     protected function resolveWhitespaces($str)
     {
         return trim(preg_replace("/\s+/", " ", $str));

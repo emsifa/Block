@@ -40,6 +40,12 @@ class Block
      * @var array $shared_vars
      */
     protected $shared_vars = [];
+
+    /**
+     * Component data
+     * @var array $components
+     */
+    protected $components = [];
     
     /**
      * @var array $directory_namespaces
@@ -237,6 +243,77 @@ class Block
         $block_name = $this->sections[count($this->sections)-1];
         $this->stop();
         echo $this->get($block_name);
+    }
+
+    /**
+     * Open component
+     * 
+     * @param string $view
+     * @param array $data
+     */
+    public function component($view, array $data = array())
+    {
+        $this->components[] = [
+            'view' => $view,
+            'data' => $data,
+            'slots' => []
+        ];
+
+        ob_start();
+    }
+
+    /**
+     * Close and render component
+     * 
+     * @param string $view
+     * @param array $data
+     */
+    public function endcomponent()
+    {
+        $component = array_pop($this->components);
+        if (!$component) {
+            throw new \Exception("No active component in this block. Make sure you have open component using 'component' method.", 1);
+        }
+
+        $component['data']['slot'] = ob_get_clean();
+        return $this->insert($component['view'], $component['data']);
+    }
+
+    /**
+     * Open slot
+     * 
+     * @param string $slot_name
+     */
+    public function slot($slot_name)
+    {
+        $count_components = count($this->components);
+        if (0 === $count_components) {
+            throw new \Exception("Slot can only used inside component definition.", 1);
+        }
+
+        $index = $count_components - 1;
+        $this->components[$index]['slots'][] = $slot_name;
+
+        ob_start();
+    }
+
+    /**
+     * Close slot
+     */
+    public function endslot()
+    {
+        $count_components = count($this->components);
+        if (0 === $count_components) {
+            throw new \Exception("Slot can only used inside component definition.", 1);
+        }
+
+        $index = $count_components - 1;
+        $slot_name = array_pop($this->components[$index]['slots']);
+        if (!$slot_name) {
+            throw new \Exception("No active slot in this block. Make sure you have open slot using 'slot' method.", 1);
+        }
+
+        $this->components[$index]['data'][$slot_name] = ob_get_clean();
     }
 
     /**
