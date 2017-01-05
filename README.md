@@ -39,7 +39,7 @@ so you can easily install it without any autoloader by following steps below:
 
 use Emsifa\Block;
 
-$view_dir = __DIR__.'/app/views';
+$view_dir = 'path/to/views';
 $view_extension = 'block.php';
 
 $block = new Block($view_dir, $view_extension);
