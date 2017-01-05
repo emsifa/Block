@@ -73,6 +73,20 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($output, '<h1>Simple Page</h1>');
     }
 
+
+    public function testShare()
+    {
+        $this->block->share('message', 'test share variable');
+        $output = $this->block->render('sharing');
+
+        $this->assertOutputSimilar($output, '
+            <div>
+                <h1>test share variable</h1>
+                <p>test share variable</p>
+            </div>
+        ');
+    }
+
     public function testEscaping()
     {
         $output = $this->block->render('escaping', [
