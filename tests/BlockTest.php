@@ -1,22 +1,21 @@
 <?php
 
+use Emsifa\Block;
+
 class BlockTest extends PHPUnit_Framework_TestCase
 {
 
     protected function setUp()
     {
-        if (!class_exists('Block')) {
-            class_alias('Emsifa\Block', 'Block');
-        }
-        Block::setDirectory(__DIR__.'/views');
-        Block::setDirectory(__DIR__.'/another_views', 'another');
-        Block::setViewExtension('php'); // set it to default view extension for every tests
+        $this->block = new Block(__DIR__.'/views');
+        $this->block->setDirectory(__DIR__.'/another_views', 'another');
+        $this->block->setViewExtension('php');
     }
     
     public function testSetAndGetDirectory()
     {
-        Block::setDirectory(__DIR__.'/views');
-        $this->assertEquals(Block::getDirectory(), __DIR__.'/views');
+        $this->block->setDirectory(__DIR__.'/views');
+        $this->assertEquals($this->block->getDirectory(), __DIR__.'/views');
         
         $namespaces = [
             'foo' => __DIR__.'/somepath/foo',
@@ -24,50 +23,50 @@ class BlockTest extends PHPUnit_Framework_TestCase
         ];
         
         foreach($namespaces as $namespace => $dir) {
-            Block::setDirectory($dir, $namespace);
-            $this->assertEquals(Block::getDirectory($namespace), $dir);
+            $this->block->setDirectory($dir, $namespace);
+            $this->assertEquals($this->block->getDirectory($namespace), $dir);
         }
     }
     
     public function testHas()
     {
-        $this->assertTrue(Block::has('base'), 'view base is exists');
-        $this->assertTrue(Block::has('simple-page'), 'view simple-page is exists');
-        $this->assertFalse(Block::has('widget'), 'view widget doesn\'t exists');
-        $this->assertTrue(Block::has('another::widget'), 'view another::widget is exists');
+        $this->assertTrue($this->block->has('base'), 'view base is exists');
+        $this->assertTrue($this->block->has('simple-page'), 'view simple-page is exists');
+        $this->assertFalse($this->block->has('widget'), 'view widget doesn\'t exists');
+        $this->assertTrue($this->block->has('another::widget'), 'view another::widget is exists');
     }
 
     public function testSimpleBlocking()
     {
-        Block::section('a block');
+        $this->block->section('a block');
         echo "i am block";
-        Block::stop();
+        $this->block->stop();
 
-        Block::section('another block');
+        $this->block->section('another block');
         echo "i am another block";
-        Block::stop();
+        $this->block->stop();
 
-        $this->assertEquals(trim(Block::get('a block')), 'i am block');
-        $this->assertEquals(trim(Block::get('another block')), 'i am another block');
+        $this->assertEquals(trim($this->block->get('a block')), 'i am block');
+        $this->assertEquals(trim($this->block->get('another block')), 'i am another block');
     }
 
     public function testParentBlocking()
     {
-        Block::section('js');
-            echo Block::parent();
+        $this->block->section('js');
+            echo $this->block->parent();
             echo "<script src='b.js'></script>";
-        Block::stop();
+        $this->block->stop();
 
-        Block::section('js');
+        $this->block->section('js');
         echo "<script src='a.js'></script>";
-        Block::stop();
+        $this->block->stop();
 
-        $this->assertEquals(trim(Block::get('js')), "<script src='a.js'></script><script src='b.js'></script>");
+        $this->assertEquals(trim($this->block->get('js')), "<script src='a.js'></script><script src='b.js'></script>");
     }
 
     public function testSimpleRender()
     {
-        $output = Block::render('simple-page', [
+        $output = $this->block->render('simple-page', [
             'message' => 'Simple Page'
         ]);
 
@@ -76,7 +75,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testEscaping()
     {
-        $output = Block::render('escaping', [
+        $output = $this->block->render('escaping', [
             'html' => '<h1>Foo</h1>',
             'script' => '<script>Bar</script>'
         ]);
@@ -91,7 +90,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testGetter()
     {
-        $output = Block::render('getter', [
+        $output = $this->block->render('getter', [
             'user' => [
                 'name' => 'John Doe',
                 'city' => [
@@ -113,7 +112,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testDotPathSeparator()
     {
-        $output = Block::render('foo.bar.baz', [
+        $output = $this->block->render('foo.bar.baz', [
             'message' => 'Simple Page'
         ]);
 
@@ -122,8 +121,8 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testCustomExtension()
     {
-        Block::setViewExtension('block');
-        $output = Block::render('simple-page', [
+        $this->block->setViewExtension('block');
+        $output = $this->block->render('simple-page', [
             'message' => 'Simple Page'
         ]);
 
@@ -132,7 +131,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testRenderWithInsert()
     {
-        $output = Block::render('page-with-insert', [
+        $output = $this->block->render('page-with-insert', [
             'title' => 'Page Title'
         ]);
 
@@ -144,13 +143,13 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testViewComposer()
     {
-        Block::composer('composer', function($data) {
+        $this->block->composer('composer', function($data) {
             return [
                 'data_from_composer' => 'bar'
             ];
         });
 
-        $output = Block::render('composer', [
+        $output = $this->block->render('composer', [
             'data_from_render' => 'foo'
         ]);
 
@@ -161,7 +160,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
 
     public function testExtend()
     {
-        $output = Block::render('page-complex', [
+        $output = $this->block->render('page-complex', [
             'title' => 'Page Complex'
         ]);
 
