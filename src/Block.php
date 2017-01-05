@@ -11,34 +11,52 @@ class Block
     /**
      * @var string $extend
      */
-    protected static $extend;
+    protected $extend;
 
     /**
      * @var string $extension
      */
-    protected static $extension = 'php';
+    protected $extension = 'php';
 
     /**
      * @var array $blocks
      */
-    protected static $blocks = [];
+    protected $blocks = [];
     
     /**
      * Started blocks
      * @var array $sections
      */
-    protected static $sections = [];
+    protected $sections = [];
     
     /**
      * View composers
-     * @var array $compsoers
+     * @var array $composers
      */
-    protected static $composers = [];
+    protected $composers = [];
+
+    /**
+     * Shared variables
+     * @var array $shared_vars
+     */
+    protected $shared_vars = [];
+
+    /**
+     * Component data
+     * @var array $components
+     */
+    protected $components = [];
     
     /**
      * @var array $directory_namespaces
      */
-    protected static $directory_namespaces = [];
+    protected $directory_namespaces = [];
+
+    public function __construct($directory, $extension = 'php')
+    {
+        $this->setDirectory($directory);
+        $this->setViewExtension($extension);
+    }
 
     /**
      * Set directory and namespace
@@ -46,9 +64,9 @@ class Block
      * @param string $directory
      * @param string $namespace
      */
-    public static function setDirectory($directory, $namespace = '')
+    public function setDirectory($directory, $namespace = '')
     {
-        static::$directory_namespaces[trim($namespace)] = $directory;
+        $this->directory_namespaces[trim($namespace)] = $directory;
     }
 
     /**
@@ -57,10 +75,10 @@ class Block
      * @param string $directory
      * @param string $namespace
      */
-    public static function getDirectory($namespace = '')
+    public function getDirectory($namespace = '')
     {
         $namespace = trim($namespace);
-        return array_key_exists($namespace, static::$directory_namespaces) ? static::$directory_namespaces[$namespace] : __DIR__;
+        return array_key_exists($namespace, $this->directory_namespaces) ? $this->directory_namespaces[$namespace] : __DIR__;
     }
 
     /**
@@ -68,19 +86,18 @@ class Block
      *
      * @param string $extension
      */
-    public static function setViewExtension($extension)
+    public function setViewExtension($extension)
     {
-        static::$extension = $extension;
+        $this->extension = $extension;
     }
 
     /**
      * Get view extension
-     *
      * @return string $extension
      */
-    public static function getViewExtension()
+    public function getViewExtension()
     {
-        return static::$extension;
+        return $this->extension;
     }
 
     /**
@@ -88,10 +105,21 @@ class Block
      *
      * @param string $view
      */
-    public static function has($view)
+    public function has($view)
     {
-        $path = static::resolvePath($view);
+        $path = $this->resolvePath($view);
         return is_file($path);
+    }
+
+    /**
+     * Share variable to all views
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function share($key, $value)
+    {
+        $this->shared_vars[$key] = $value;
     }
 
     /**
@@ -99,15 +127,15 @@ class Block
      *
      * @param string|array $views
      */
-    public static function composer($views, callable $composer)
+    public function composer($views, callable $composer)
     {
         $views = (array) $views;
         foreach($views as $view) {
-            if (!isset(static::$composers[$view])) {
-                static::$composers[$view] = [];
+            if (!isset($this->composers[$view])) {
+                $this->composers[$view] = [];
             }
 
-            static::$composers[$view][] = $composer;
+            $this->composers[$view][] = $composer;
         }
     }
 
@@ -116,29 +144,28 @@ class Block
      *
      * @param string $view
      * @param array $__data
-     *
      * @return string render result
      */
-    public static function render($view, array $__data = array())
+    public function render($view, array $__data = array())
     {
-        $__data = static::composeData($view, $__data);
-        static::makeSureViewExists($view);
-        $view_path = static::resolvePath($view);
+        $__data = $this->resolveData($view, $__data);
+        $this->makeSureViewExists($view);
+        $view_path = $this->resolvePath($view);
 
         extract($__data);
-        $get = static::makeGetter($__data);
+        $get = $this->makeGetter($__data);
         $e = function($value) {
-            return Block::escape($value);
+            return $this->escape($value);
         };
 
         ob_start();
         include($view_path);
         $result = ob_get_clean();
 
-        if (static::$extend) {
-            $view = static::$extend;
-            static::$extend = '';
-            $result = static::render($view, $__data);
+        if ($this->extend) {
+            $view = $this->extend;
+            $this->extend = '';
+            $result = $this->render($view, $__data);
         }
 
         return $result;
@@ -150,16 +177,16 @@ class Block
      * @param string $view
      * @param array $__data
      */
-    public static function insert($view, array $__data = array())
+    public function insert($view, array $__data = array())
     {
-        $__data = static::composeData($view, $__data);
-        static::makeSureViewExists($view);
-        $path = static::resolvePath($view);
+        $__data = $this->resolveData($view, $__data);
+        $this->makeSureViewExists($view);
+        $path = $this->resolvePath($view);
 
         extract($__data);
-        $get = static::makeGetter($__data);
+        $get = $this->makeGetter($__data);
         $e = function($value) {
-            return Block::escape($value);
+            return $this->escape($value);
         };
 
         include($path);
@@ -170,9 +197,9 @@ class Block
      *
      * @param string $view
      */
-    public static function extend($view)
+    public function extend($view)
     {
-        static::$extend = $view;
+        $this->extend = $view;
     }
 
     /**
@@ -180,16 +207,16 @@ class Block
      *
      * @param string $block_name
      */
-    public static function section($block_name)
+    public function section($block_name)
     {
-        static::$sections[] = $block_name;
+        $this->sections[] = $block_name;
         ob_start();
     }
 
     /**
      * Alias of static::PARENT_REPLACER
      */
-    public static function parent()
+    public function parent()
     {
         return static::PARENT_REPLACER;
     }
@@ -199,46 +226,115 @@ class Block
      *
      * @param string $block_name
      */
-    public static function stop()
+    public function stop()
     {
-        $block_name = array_pop(static::$sections);
-        if (!array_key_exists($block_name, static::$blocks)) {
-            static::$blocks[$block_name] = [];
+        $block_name = array_pop($this->sections);
+        if (!array_key_exists($block_name, $this->blocks)) {
+            $this->blocks[$block_name] = [];
         }
-        static::$blocks[$block_name][] = ob_get_clean();
+        $this->blocks[$block_name][] = ob_get_clean();
     }
 
     /**
      * Close and printing section
      */
-    public static function show()
+    public function show()
     {
-        $block_name = static::$sections[count(static::$sections)-1];
-        static::stop();
-        echo static::get($block_name);
+        $block_name = $this->sections[count($this->sections)-1];
+        $this->stop();
+        echo $this->get($block_name);
+    }
+
+    /**
+     * Open component
+     * 
+     * @param string $view
+     * @param array $data
+     */
+    public function component($view, array $data = array())
+    {
+        $this->components[] = [
+            'view' => $view,
+            'data' => $data,
+            'slots' => []
+        ];
+
+        ob_start();
+    }
+
+    /**
+     * Close and render component
+     * 
+     * @param string $view
+     * @param array $data
+     */
+    public function endcomponent()
+    {
+        $component = array_pop($this->components);
+        if (!$component) {
+            throw new \Exception("No active component in this block. Make sure you have open component using 'component' method.", 1);
+        }
+
+        $component['data']['slot'] = ob_get_clean();
+        return $this->insert($component['view'], $component['data']);
+    }
+
+    /**
+     * Open slot
+     * 
+     * @param string $slot_name
+     */
+    public function slot($slot_name)
+    {
+        $count_components = count($this->components);
+        if (0 === $count_components) {
+            throw new \Exception("Slot can only used inside component definition.", 1);
+        }
+
+        $index = $count_components - 1;
+        $this->components[$index]['slots'][] = $slot_name;
+
+        ob_start();
+    }
+
+    /**
+     * Close slot
+     */
+    public function endslot()
+    {
+        $count_components = count($this->components);
+        if (0 === $count_components) {
+            throw new \Exception("Slot can only used inside component definition.", 1);
+        }
+
+        $index = $count_components - 1;
+        $slot_name = array_pop($this->components[$index]['slots']);
+        if (!$slot_name) {
+            throw new \Exception("No active slot in this block. Make sure you have open slot using 'slot' method.", 1);
+        }
+
+        $this->components[$index]['data'][$slot_name] = ob_get_clean();
     }
 
     /**
      * Get section
      *
      * @param string $block_name
-     *
      * @return string
      */
-    public static function get($block_name)
+    public function get($block_name)
     {
-        $stacks = array_key_exists($block_name, static::$blocks)? static::$blocks[$block_name] : null;
-        return $stacks? static::renderStacks($stacks) : '';
+        $stacks = array_key_exists($block_name, $this->blocks)? $this->blocks[$block_name] : null;
+        return $stacks? $this->renderStacks($stacks) : '';
     }
 
     /**
      * Escaping html
      *
      * @param string $value
-     *
      * @return string
      */
-    public static function escape($value)
+    public function escape($value)
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
     }
@@ -247,14 +343,13 @@ class Block
      * Render block stacks
      *
      * @param array $stacks
-     *
      * @return string
      */
-    protected static function renderStacks(array $stacks)
+    protected function renderStacks(array $stacks)
     {
         $current = array_pop($stacks);
         if (count($stacks)) {
-            return str_replace(static::PARENT_REPLACER, $current, static::renderStacks($stacks));
+            return str_replace(static::PARENT_REPLACER, $current, $this->renderStacks($stacks));
         } else {
             return $current;
         }
@@ -264,27 +359,26 @@ class Block
      * Resolve view directory
      *
      * @param string $view
-     *
      * @return string view directory
      */
-    protected static function resolvePath($view)
+    protected function resolvePath($view)
     {
         $view = str_replace('.', '/', $view);
         $expl = explode(static::NAMESPACE_SEPARATOR, $view);
         list($namespace, $view_path) = (count($expl) > 1) ? $expl : ['', $expl[0]];
 
-        $path = static::getDirectory($namespace) . '/' . $view_path . '.' . static::getViewExtension();
+        $path = $this->getDirectory($namespace) . '/' . $view_path . '.' . $this->getViewExtension();
         return $path;
     }
 
-    protected static function makeSureViewExists($view)
+    protected function makeSureViewExists($view)
     {
-        if (!static::has($view)) {
+        if (!$this->has($view)) {
             throw new \Exception("View {$view} is not exists");
         }
     }
 
-    protected static function makeGetter(array $data)
+    protected function makeGetter(array $data)
     {
         return function($key, $default = null) use ($data) {
             if (array_key_exists($key, $data)) {
@@ -301,9 +395,10 @@ class Block
         };
     }
 
-    protected static function composeData($view, array $data)
+    protected function resolveData($view, array $data)
     {
-        $composers = isset(static::$composers[$view]) ? static::$composers[$view] : [];
+        $data = array_merge($this->shared_vars, $data);
+        $composers = isset($this->composers[$view]) ? $this->composers[$view] : [];
         foreach($composers as $composer) {
             $data = array_merge($data, (array) call_user_func_array($composer, [$data, $view]));
         }   

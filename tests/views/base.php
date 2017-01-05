@@ -1,16 +1,16 @@
 <html>
 <head>
     <title><?= $title ?></title>
-    <?= Block::section('css') ?>
+    <?= $this->section('css') ?>
     <link href="a.css"/>
-    <?= Block::show() ?>
+    <?= $this->show() ?>
 </head>
 <body>
-    <?= Block::insert('another::component') ?>
-    <?= Block::get('content') ?>
+    <?= $this->insert('another::component') ?>
+    <?= $this->get('content') ?>
         
-    <?= Block::section('scripts') ?>
+    <?= $this->section('scripts') ?>
     <script src="a.js"></script>
-    <?= Block::show() ?>
+    <?= $this->show() ?>
 </body>
 </html>
