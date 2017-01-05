@@ -476,8 +476,8 @@ So now, whenever navbar is rendered, composer will set variable `username` to it
 
 This is new feature in Laravel 5.4 which inspired by Vue.js. 
 Sometimes you may have partial view containing dynamic HTML.
-With `insert` method, you can add HTML string as data for second argument.
-But put HTML code in string is bad practice, most text editors cannot highlight it.
+With `insert` method, you can add HTML string in view data (second argument `insert`).
+But, putting HTML code inside string is a bad practice, most text editors cannot highlight it.
 
 So, this features allows you to write HTML that will be transformed to variable in partial view.
 
