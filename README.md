@@ -99,14 +99,14 @@ _Page view_ is a view that `extend` _master view_ and contain some blocks that d
 
 If you familiar with laravel blade syntax, here are the differences.
 
-| Blade                 | Block                               |
-|-----------------------|-------------------------------------|
-| @extends('view-name') | <?php $this->extend('view-name') ?> |
-| @section('content')   | <?php $this->section('content') ?>  |
-| @stop                 | <?php $this->stop() ?>              |
-| @show                 | <?php $this->show() ?>              |
-| @parent               | <?php $this->parent() ?>            |
-| @yield('content')     | <?php echo $this->get('content') ?> |
+| Blade                 | Block                                 |
+|-----------------------|---------------------------------------|
+| @extends('view-name') | `<?php $this->extend('view-name') ?>` |
+| @section('content')   | `<?php $this->section('content') ?>`  |
+| @stop                 | `<?php $this->stop() ?>`              |
+| @show                 | `<?php $this->show() ?>`              |
+| @parent               | `<?php $this->parent() ?>`            |
+| @yield('content')     | `<?php echo $this->get('content') ?>` |
 
 Here is simple real world case about extending and blocking
 
