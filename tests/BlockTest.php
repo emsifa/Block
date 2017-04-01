@@ -11,23 +11,23 @@ class BlockTest extends PHPUnit_Framework_TestCase
         $this->block->setDirectory(__DIR__.'/another_views', 'another');
         $this->block->setViewExtension('php');
     }
-    
+
     public function testSetAndGetDirectory()
     {
         $this->block->setDirectory(__DIR__.'/views');
         $this->assertEquals($this->block->getDirectory(), __DIR__.'/views');
-        
+
         $namespaces = [
             'foo' => __DIR__.'/somepath/foo',
             'bar' => '/../somepath/bar'
         ];
-        
+
         foreach($namespaces as $namespace => $dir) {
             $this->block->setDirectory($dir, $namespace);
             $this->assertEquals($this->block->getDirectory($namespace), $dir);
         }
     }
-    
+
     public function testHas()
     {
         $this->assertTrue($this->block->has('base'), 'view base is exists');
@@ -150,7 +150,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         ]);
 
         $this->assertOutputSimilar($output, '
-            <h1>Page Title</h1> 
+            <h1>Page Title</h1>
             <div>widget content</div>
         ');
     }
@@ -168,7 +168,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
         ]);
 
         $this->assertOutputSimilar($output, '
-            <h1>foo bar</h1> 
+            <h1>foo bar</h1>
         ');
     }
 

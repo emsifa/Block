@@ -4,7 +4,7 @@ namespace Emsifa;
 
 class Block
 {
-    
+
     const PARENT_REPLACER = '<!--block::parent-->';
     const NAMESPACE_SEPARATOR = '::';
 
@@ -22,13 +22,13 @@ class Block
      * @var array $blocks
      */
     protected $blocks = [];
-    
+
     /**
      * Started blocks
      * @var array $sections
      */
     protected $sections = [];
-    
+
     /**
      * View composers
      * @var array $composers
@@ -46,7 +46,7 @@ class Block
      * @var array $components
      */
     protected $components = [];
-    
+
     /**
      * @var array $directory_namespaces
      */
@@ -247,7 +247,7 @@ class Block
 
     /**
      * Open component
-     * 
+     *
      * @param string $view
      * @param array $data
      */
@@ -264,7 +264,7 @@ class Block
 
     /**
      * Close and render component
-     * 
+     *
      * @param string $view
      * @param array $data
      */
@@ -281,7 +281,7 @@ class Block
 
     /**
      * Open slot
-     * 
+     *
      * @param string $slot_name
      */
     public function slot($slot_name)
@@ -401,7 +401,7 @@ class Block
         $composers = isset($this->composers[$view]) ? $this->composers[$view] : [];
         foreach($composers as $composer) {
             $data = array_merge($data, (array) call_user_func_array($composer, [$data, $view]));
-        }   
+        }
 
         return $data;
     }

@@ -1,0 +1,18 @@
+root = true
+
+[*]
+indent_style = space
+end_of_line = lf
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.php]
+insert_final_newline = true
+
+[*.{json,yml}]
+insert_final_newline = false
+indent_size = 2
+
+[{tests/views/**.php,tests/another_views/**.php}]
+insert_final_newline = false
+indent_size = 2

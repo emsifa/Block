@@ -1,5 +1,5 @@
 {
-	"name": "emsifa/block",
+  "name": "emsifa/block",
   "description": "PHP Native Template System",
   "license": "MIT",
   "authors": [
@@ -9,14 +9,14 @@
     }
   ],
   "require": {
-  	"php": ">=5.5.0"
+    "php": ">=5.5.0"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*"
   },
   "autoload": {
-  	"psr-4": {
-  		"Emsifa\\": "src/"
-  	}
+    "psr-4": {
+      "Emsifa\\": "src/"
+    }
   }
 }
