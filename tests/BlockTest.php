@@ -232,6 +232,25 @@ class BlockTest extends PHPUnit_Framework_TestCase
         ');
     }
 
+    public function testShareRenderDataAcrossSubViews()
+    {
+        $output = $this->block->render('page-share-data-across-subviews', [
+            'message' => "foobar"
+        ]);
+
+        $this->assertOutputSimilar($output, '
+            <div>
+                <template>foobar</template>
+                <h1>foobar</h1>
+                <div class="message-component">foobar</div>
+                <div class="another-message-component">
+                    <h3>foobar</h3>
+                    <p>Slot</p>
+                </div>
+            </div>
+        ');
+    }
+
     protected function resolveWhitespaces($str)
     {
         return trim(preg_replace("/\s+/", " ", $str));

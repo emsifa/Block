@@ -37,9 +37,15 @@ class Block
 
     /**
      * Shared variables
-     * @var array $shared_vars
+     * @var array $shared_data
      */
-    protected $shared_vars = [];
+    protected $shared_data = [];
+
+    /**
+     * Render variables
+     * @var array $render_data
+     */
+    protected $render_data = [];
 
     /**
      * Component data
@@ -119,7 +125,7 @@ class Block
      */
     public function share($key, $value)
     {
-        $this->shared_vars[$key] = $value;
+        $this->shared_data[$key] = $value;
     }
 
     /**
@@ -148,6 +154,8 @@ class Block
      */
     public function render($view, array $__data = array())
     {
+        $this->render_data = $__data;
+
         $__data = $this->resolveData($view, $__data);
         $this->makeSureViewExists($view);
         $view_path = $this->resolvePath($view);
@@ -397,7 +405,7 @@ class Block
 
     protected function resolveData($view, array $data)
     {
-        $data = array_merge($this->shared_vars, $data);
+        $data = array_merge($this->shared_data, $this->render_data, $data);
         $composers = isset($this->composers[$view]) ? $this->composers[$view] : [];
         foreach($composers as $composer) {
             $data = array_merge($data, (array) call_user_func_array($composer, [$data, $view]));
