@@ -302,6 +302,32 @@ class BlockTest extends PHPUnit_Framework_TestCase
         ');
     }
 
+    public function testOnce()
+    {
+        $output = $this->block->render('page-with-once', [
+            'title' => 'Test Once'
+        ]);
+
+        $this->assertOutputSimilar($output, '
+            <html>
+                <head>
+                    <title>Test Once</title>
+                    <link href="a.css"/>
+                </head>
+                <body class="page-test">
+                    <select name="select_a" class="select2"></select>
+                    <select name="select_b" class="select2"></select>
+
+                    <script src="a.js"></script>
+                    <script src="select2.js"></script>
+                    <script>
+                      $(\'select.select2\').select2();
+                    </script>
+                </body>
+            </html>
+        ');
+    }
+
     protected function resolveWhitespaces($str)
     {
         return trim(preg_replace("/\s+/", " ", $str));

@@ -33,6 +33,18 @@ class Block
     protected $sections = [];
 
     /**
+     * Once key
+     * @var string $once_key
+     */
+    protected $once_key = [];
+
+    /**
+     * Loaded onces
+     * @var array $onces
+     */
+    protected $onces = [];
+
+    /**
      * View composers
      * @var array $composers
      */
@@ -263,6 +275,41 @@ class Block
     public function prepend($block_name)
     {
         $this->section($block_name, static::PREPEND);
+    }
+
+    /**
+     * Open once
+     *
+     * @param string $key
+     */
+    public function once($key)
+    {
+        if ($this->once_key) {
+            throw new \Exception("'once' cannot be nested.");
+        }
+        $this->once_key = $key;
+        ob_start();
+    }
+
+    /**
+     * Open once
+     *
+     * @param string $key
+     */
+    public function endonce()
+    {
+        $once_key = $this->once_key;
+
+        if (!$once_key) {
+            throw new \Exception("Invalid call 'endonce'. Did you have call 'once' on top of it?");
+        }
+
+        $content = ob_get_clean();
+        if (!in_array($once_key, $this->onces)) {
+            $this->onces[] = $once_key;
+            echo $content;
+        }
+        $this->once_key = null;
     }
 
     /**

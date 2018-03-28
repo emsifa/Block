@@ -634,6 +634,35 @@ You can do this:
 <?= $this->stop() ?>
 ```
 
+#### Write Code Once
+
+For example you want to make partial view for `datepicker`,
+and want put datepicker script just once even you `put()` it multiple times, you can use method `once()`.
+
+Example
+
+```html
+<!-- Stored in path/to/views/partials/datepicker.block.php -->
+<input type="text" class="text datepicker" name="<?= $name ?>"/>
+
+<?= $this->append('styles') ?>
+  <?= $this->once('datepicker-style') ?>
+  <link rel="stylesheet" href="path/to/datepicker.min.css">
+  <?= $this->endonce() ?>
+<?= $this->stop() ?>
+
+<?= $this->append('scripts') ?>
+  <?= $this->once('datepicker-script') ?>
+  <script src="path/to/datepicker.min.js"></script>
+  <script>
+    $('.datepicker').datepicker();
+  </script>
+  <?= $this->endonce() ?>
+<?= $this->stop() ?>
+```
+
+With this approach, no matter how much you `put('partials.datepicker')`, datepicker script and css only rendered once!
+
 ## Dot or Slash?
 
 I love blade for template engine, but I can't always use blade in my project, especially in small projects.
