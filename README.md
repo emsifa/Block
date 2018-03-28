@@ -232,7 +232,7 @@ And the result should looks like this
 
 #### HTML Escaping
 
-Like another template engine, Block also have shortcuts for escaping HTML.
+Like another template engine, Block also have shortcut for escaping HTML.
 In Block you can escaping HTML using `$this->escape($html)` or `$e($html)`.
 
 Example:
