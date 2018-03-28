@@ -602,7 +602,7 @@ Instead of do this:
 
 ```html
 <?= $this->section('scripts') ?>
-    <?= $this->section() ?>
+    <?= $this->parent() ?>
     <script>alert('my scripts')</script>
 <?= $this->stop() ?>
 ```
@@ -622,7 +622,7 @@ Instead of do this:
 ```html
 <?= $this->section('scripts') ?>
     <script>alert('my scripts')</script>
-    <?= $this->section() ?>
+    <?= $this->parent() ?>
 <?= $this->stop() ?>
 ```
 
@@ -643,7 +643,12 @@ Example
 
 ```html
 <!-- Stored in path/to/views/partials/datepicker.block.php -->
-<input type="text" class="text datepicker" name="<?= $name ?>"/>
+<div class="input-group">
+  <div class="input-group-prepend">
+    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+  </div>
+  <input type="text" class="form-control datepicker" name="<?= $name ?>"/>
+</div>
 
 <?= $this->append('styles') ?>
   <?= $this->once('datepicker-style') ?>
