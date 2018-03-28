@@ -426,9 +426,6 @@ Now if you `echo $block->render('pages.home')`, the output should looks like thi
 
 Notice: `slider.css` and `slider.js` are placed in that order.
 
-> Note: If you want to use page view data in partial view, you can pass `$__data` in `$this->put`.
-  For example, slider above would be `$this->put('partials.slider', $__data)`
-
 #### Add Directory Namespace
 
 You can put second argument in `setDirectory` method to set namespaced directory.
