@@ -308,7 +308,10 @@ There is another view type called _partial view_.
 _Partial view_ is a view file containing partial layout
 that you can use in some _page_ or _master view_ like widget, sidebar, navbar, main-menu, etc.
 _Partial view_ is like _master view_, it is not for rendered by `render` method.
-But you can render it by put it inside _master_ or _page view_ via `insert` method.
+But you can render it by put it inside _master_ or _page view_ via `put` method.
+
+In Blade, you can use `@include('partial', $data)` to include partial view.
+In block, you can use `<?= $this->put('partial', $data) ?>` instead.
 
 For example, let's create a new _page view_ that contain a widget slider.
 
@@ -340,7 +343,7 @@ First you need to create _partial view_ for widget slider:
 
 ```
 
-Then you can include it in `home` _page view_ using `insert` method.
+Then you can include it in `home` _page view_ using `put` method.
 
 ```html
 <!-- Stored in path/to/views/pages/home.block.php -->
@@ -361,7 +364,7 @@ Then you can include it in `home` _page view_ using `insert` method.
 
 <?= $this->section('content') ?>
 <div class="container">
-  <?= $this->insert('partials.slider') ?>
+  <?= $this->put('partials.slider') ?>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
     Officiis, mollitia ad commodi.
@@ -423,8 +426,8 @@ Now if you `echo $block->render('pages.home')`, the output should looks like thi
 
 Notice: `slider.css` and `slider.js` are placed in that order.
 
-> Note: If you want to use page view data in partial view, you can pass `$__data` in `$this->insert`.
-  For example, slider above would be `$this->insert('partials.slider', $__data)`
+> Note: If you want to use page view data in partial view, you can pass `$__data` in `$this->put`.
+  For example, slider above would be `$this->put('partials.slider', $__data)`
 
 #### Add Directory Namespace
 
@@ -438,9 +441,9 @@ $block->setDirectory('path/to/admin/views', 'admin');
 // then you can render it like this
 $block->render('admin::pages.dashboard');
 
-// and extend or insert something in your view files like this
+// and extend or put something in your view files like this
 $this->extend('admin::master');
-$this->insert('admin::partials.some-chart');
+$this->put('admin::partials.some-chart');
 ```
 
 #### View Composer
@@ -462,7 +465,7 @@ First you need to register view composer for navbar using `composer` method.
 
 ```php
 $block->composer('partials.navbar', function($data) {
-    // $data is data you passed into `render` or `insert` method
+    // $data is data you passed into `render` or `put` method
     return [
         'username' => Auth::user()->username
     ];
@@ -490,7 +493,7 @@ So now, whenever navbar is rendered, composer will set variable `username` to it
 
 This is new feature in Laravel 5.4 which inspired by Vue.js.
 Sometimes you may have partial view containing dynamic HTML.
-With `insert` method, you can add HTML string in view data (second argument `insert`).
+With `put` method, you can add HTML string in view data (second argument `put`).
 But, putting HTML code inside string is a bad practice, most text editors cannot highlight it.
 
 So, this features allows you to write HTML that will be transformed to variable in partial view.
@@ -505,12 +508,12 @@ Think about alert, you may have alert which contain dynamic HTML inside it like 
 </div>
 ```
 
-With `insert` method, you need to pass `slot` and `title` variables like this:
+With `put` method, you need to pass `slot` and `title` variables like this:
 
 ```php
 <?php
 
-$this->insert('partials.alert', [
+$this->put('partials.alert', [
     'title' => 'Validation Errors <strong class="close">&times;</strong>',
     'slot' => '
       <ul>
@@ -524,7 +527,7 @@ $this->insert('partials.alert', [
 ```
 
 It is ugly to put HTML inside string like that.
-With component and slot, you can insert `alert` view like this:
+With component and slot, you can put `alert` view like this:
 
 
 ```php
@@ -571,7 +574,7 @@ Master view
     <h1>App Name</h1>
   </header>
   <div id="content">
-    <?= false === $get('sidebar') ? $this->insert('sidebar') : '' ?>
+    <?= false === $get('sidebar') ? $this->put('sidebar') : '' ?>
     <?= $this->get('content') ?>
   </div>
   <footer>

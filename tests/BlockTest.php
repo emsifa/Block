@@ -155,6 +155,18 @@ class BlockTest extends PHPUnit_Framework_TestCase
         ');
     }
 
+    public function testRenderWithPut()
+    {
+        $output = $this->block->render('page-with-put', [
+            'title' => 'Page Title'
+        ]);
+
+        $this->assertOutputSimilar($output, '
+            <h1>Page Title</h1>
+            <div>widget content</div>
+        ');
+    }
+
     public function testViewComposer()
     {
         $this->block->composer('composer', function($data) {

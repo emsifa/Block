@@ -210,6 +210,17 @@ class Block
     }
 
     /**
+     * Alias of insert
+     *
+     * @param string $view
+     * @param array $__data
+     */
+    public function put($view, array $__data = array())
+    {
+        return $this->insert($view, $__data);
+    }
+
+    /**
      * Extending a view
      *
      * @param string $view
