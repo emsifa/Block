@@ -497,9 +497,9 @@ So, this features allows you to write HTML that will be transformed to variable 
 
 Think about alert, you may have alert which contain dynamic HTML inside it like this:
 
-```php
+```html
 <!-- Stored in path/to/views/partials/alert.block.php -->
-<div class="alert">
+<div class="alert alert-<?= $type ?>">
   <h4><?= $title ?></h4>
   <?= $slot ?>
 </div>
@@ -512,6 +512,7 @@ With `put` method, you need to pass `slot` and `title` variables like this:
 
 $this->put('partials.alert', [
     'title' => 'Validation Errors <strong class="close">&times;</strong>',
+    'type' => 'danger',
     'slot' => '
       <ul>
         <li>Email is required</li>
@@ -528,7 +529,7 @@ With component and slot, you can put `alert` view like this:
 
 
 ```php
-<?= $this->component('partials.alert') ?>
+<?= $this->component('partials.alert', ['type' => 'danger']) ?>
   <?= $this->slot('title') ?>
     Validation Errors <strong class="close">&times;</strong>
   <?= $this->endslot() ?>
@@ -541,8 +542,6 @@ With component and slot, you can put `alert` view like this:
 
 Now code inside `component` will transformed into `slot` variable,
 and code inside `slot('title')` will transformed into `title` variable.
-
-> You can pass array view data as second argument in `component` method.
 
 
 #### Extending with Data
