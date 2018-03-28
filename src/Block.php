@@ -8,6 +8,9 @@ class Block
     const PARENT_REPLACER = '<!--block::parent-->';
     const NAMESPACE_SEPARATOR = '::';
 
+    const APPEND = 'append';
+    const PREPEND = 'prepend';
+
     /**
      * @var string $extend
      */
@@ -222,10 +225,33 @@ class Block
      *
      * @param string $block_name
      */
-    public function section($block_name)
+    public function section($block_name, $type = null)
     {
-        $this->sections[] = $block_name;
+        $this->sections[] = ['name' => $block_name, 'type' => $type];
         ob_start();
+        if ($type === static::APPEND) {
+            echo $this->parent();
+        }
+    }
+
+    /**
+     * Append section
+     *
+     * @param string $block_name
+     */
+    public function append($block_name)
+    {
+        $this->section($block_name, static::APPEND);
+    }
+
+    /**
+     * Append section
+     *
+     * @param string $block_name
+     */
+    public function prepend($block_name)
+    {
+        $this->section($block_name, static::PREPEND);
     }
 
     /**
@@ -243,11 +269,17 @@ class Block
      */
     public function stop()
     {
-        $block_name = array_pop($this->sections);
-        if (!array_key_exists($block_name, $this->blocks)) {
-            $this->blocks[$block_name] = [];
+        $block = array_pop($this->sections);
+
+        if (!array_key_exists($block['name'], $this->blocks)) {
+            $this->blocks[$block['name']] = [];
         }
-        $this->blocks[$block_name][] = ob_get_clean();
+
+        if ($block['type'] === static::PREPEND) {
+            echo $this->parent();
+        }
+
+        $this->blocks[$block['name']][] = ob_get_clean();
     }
 
     /**
@@ -255,9 +287,9 @@ class Block
      */
     public function show()
     {
-        $block_name = $this->sections[count($this->sections)-1];
+        $block = $this->sections[count($this->sections)-1];
         $this->stop();
-        echo $this->get($block_name);
+        echo $this->get($block['name']);
     }
 
     /**

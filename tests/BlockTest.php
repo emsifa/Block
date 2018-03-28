@@ -205,6 +205,46 @@ class BlockTest extends PHPUnit_Framework_TestCase
         ');
     }
 
+    public function testAppend()
+    {
+        $output = $this->block->render('page-append-js', [
+            'title' => 'Test Append'
+        ]);
+
+        $this->assertOutputSimilar($output, '
+            <html>
+                <head>
+                    <title>Test Append</title>
+                    <link href="a.css"/>
+                </head>
+                <body class="page-test">
+                    <script src="a.js"></script>
+                    <script src="b.js"></script>
+                </body>
+            </html>
+        ');
+    }
+
+    public function testPrepend()
+    {
+        $output = $this->block->render('page-prepend-js', [
+            'title' => 'Test Prepend'
+        ]);
+
+        $this->assertOutputSimilar($output, '
+            <html>
+                <head>
+                    <title>Test Prepend</title>
+                    <link href="a.css"/>
+                </head>
+                <body class="page-test">
+                    <script src="b.js"></script>
+                    <script src="a.js"></script>
+                </body>
+            </html>
+        ');
+    }
+
     public function testComponent()
     {
         $output = $this->block->render('page-with-component');
@@ -258,8 +298,8 @@ class BlockTest extends PHPUnit_Framework_TestCase
     protected function assertOutputSimilar($output, $like, $message = null)
     {
         return $this->assertEquals(
-            $this->resolveWhitespaces($output),
             $this->resolveWhitespaces($like),
+            $this->resolveWhitespaces($output),
             $message
         );
     }

@@ -426,7 +426,7 @@ Notice: `slider.css` and `slider.js` are placed in that order.
 > Note: If you want to use page view data in partial view, you can pass `$__data` in `$this->insert`.
   For example, slider above would be `$this->insert('partials.slider', $__data)`
 
-## Add Directory Namespace
+#### Add Directory Namespace
 
 You can put second argument in `setDirectory` method to set namespaced directory.
 
@@ -443,7 +443,7 @@ $this->extend('admin::master');
 $this->insert('admin::partials.some-chart');
 ```
 
-## View Composer
+#### View Composer
 
 We have told you that Block is inspired by Blade right. So Block also have view composer like blade.
 
@@ -486,7 +486,7 @@ So now, whenever navbar is rendered, composer will set variable `username` to it
 
 > You can set first argument as array if you wanna set a composer to multiple views.
 
-## Component and Slot
+#### Component and Slot
 
 This is new feature in Laravel 5.4 which inspired by Vue.js.
 Sometimes you may have partial view containing dynamic HTML.
@@ -545,7 +545,7 @@ and code inside `slot('title')` will transformed into `title` variable.
 > You can pass array view data as second argument in `component` method.
 
 
-## Extending with Data
+#### Extending with Data
 
 For example you have case that some page using sidebar, and some page are not using it.
 You can pass data to `extend` method, so you don't need to pass it inside controller.
@@ -594,6 +594,44 @@ Page view
     <p>
         Your page content goes here
     </p>
+<?= $this->stop() ?>
+```
+
+#### Append Section
+
+Instead of do this:
+
+```html
+<?= $this->section('scripts') ?>
+    <?= $this->section() ?>
+    <script>alert('my scripts')</script>
+<?= $this->stop() ?>
+```
+
+You can do this:
+
+```html
+<?= $this->append('scripts') ?>
+    <script>alert('my scripts')</script>
+<?= $this->stop() ?>
+```
+
+#### Prepend Section
+
+Instead of do this:
+
+```html
+<?= $this->section('scripts') ?>
+    <script>alert('my scripts')</script>
+    <?= $this->section() ?>
+<?= $this->stop() ?>
+```
+
+You can do this:
+
+```html
+<?= $this->prepend('scripts') ?>
+    <script>alert('my scripts')</script>
 <?= $this->stop() ?>
 ```
 
