@@ -282,6 +282,7 @@ You can use `$get` like this:
 Note: `$get` also support dot notation. It mean, you can access array using dot as separator in `$key`.
 
 For example you render a view with array data like this:
+
 ```php
 $block->render('pages/profile', [
   'user' => [
@@ -542,6 +543,59 @@ Now code inside `component` will transformed into `slot` variable,
 and code inside `slot('title')` will transformed into `title` variable.
 
 > You can pass array view data as second argument in `component` method.
+
+
+## Extending with Data
+
+For example you have case that some page using sidebar, and some page are not using it.
+You can pass data to `extend` method, so you don't need to pass it inside controller.
+
+For example:
+
+
+Master view
+
+```html
+<!-- Stored in path/to/views/master.block.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><?= $title ?></title>
+  <?= $this->section('stylesheets') ?>
+  <link rel="stylesheet" href="bootstrap.css">
+  <?= $this->show() ?>
+</head>
+<body>
+  <header>
+    <h1>App Name</h1>
+  </header>
+  <div id="content">
+    <?= false === $get('sidebar') ? $this->insert('sidebar') : '' ?>
+    <?= $this->get('content') ?>
+  </div>
+  <footer>
+    &copy; 2016 - my app
+  </footer>
+  <?= $this->section('scripts') ?>
+  <script src="jquery.js"></script>
+  <script src="bootstrap.js"></script>
+  <?= $this->show() ?>
+</body>
+</html>
+```
+
+Page view
+
+```html
+<?= $this->extend('master', ['sidebar' => false]) ?>
+
+<?= $this->section('content') ?>
+    <p>
+        Your page content goes here
+    </p>
+<?= $this->stop() ?>
+```
 
 ## Dot or Slash?
 

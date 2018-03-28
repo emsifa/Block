@@ -5,7 +5,7 @@
   <link href="a.css"/>
   <?= $this->show() ?>
 </head>
-<body>
+<body class="<?= $get('body_classes') ?>">
   <?= $this->insert('another::component') ?>
   <?= $this->get('content') ?>
 

@@ -1,4 +1,4 @@
-<?= $this->extend('base') ?>
+<?= $this->extend('base', ['body_classes' => 'page-test']) ?>
 
 <?= $this->section('content') ?>
   <h1><?= $title ?></h1>

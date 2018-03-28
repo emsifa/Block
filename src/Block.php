@@ -48,6 +48,12 @@ class Block
     protected $render_data = [];
 
     /**
+     * Extend data
+     * @var array $extend_data
+     */
+    protected $extend_data = [];
+
+    /**
      * Component data
      * @var array $components
      */
@@ -173,7 +179,7 @@ class Block
         if ($this->extend) {
             $view = $this->extend;
             $this->extend = '';
-            $result = $this->render($view, $__data);
+            $result = $this->render($view, array_merge($__data, $this->extend_data));
         }
 
         return $result;
@@ -205,9 +211,10 @@ class Block
      *
      * @param string $view
      */
-    public function extend($view)
+    public function extend($view, array $data = [])
     {
         $this->extend = $view;
+        $this->extend_data = $data;
     }
 
     /**

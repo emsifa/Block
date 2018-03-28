@@ -185,7 +185,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
                     <link href="a.css"/>
                     <link href="b.css"/>
                 </head>
-                <body>
+                <body class="page-test">
                     <h1>Component</h1>
                     <h1>Page Complex</h1>
                     <div id="container">
@@ -204,7 +204,6 @@ class BlockTest extends PHPUnit_Framework_TestCase
             </html>
         ');
     }
-
 
     public function testComponent()
     {
