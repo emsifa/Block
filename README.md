@@ -59,7 +59,7 @@ Create file `path/to/views/hello.block.php`.
 ```php
 <h1><?= $title ?></h1>
 <p>
-	<?= $message ?>
+  <?= $message ?>
 </p>
 ```
 
@@ -69,8 +69,8 @@ Then somewhere in your code, you can render it with `render` method like this:
 
 ```php
 echo $block->render('hello', [
-	'title' => 'Hello World'
-	'message' => 'Lorem ipsum dolor sit amet'
+    'title' => 'Hello World'
+    'message' => 'Lorem ipsum dolor sit amet'
 ]);
 ```
 
